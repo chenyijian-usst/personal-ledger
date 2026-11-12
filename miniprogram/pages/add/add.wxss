@@ -1,0 +1,287 @@
+.add-page {
+  padding-bottom: calc(300rpx + env(safe-area-inset-bottom));
+}
+
+/* 类型切换 */
+.type-switch {
+  display: flex;
+  background: #eceff4;
+  border-radius: 999rpx;
+  padding: 6rpx;
+  margin-bottom: 24rpx;
+}
+
+.type-item {
+  flex: 1;
+  text-align: center;
+  height: 68rpx;
+  line-height: 68rpx;
+  font-size: 28rpx;
+  color: var(--text-2);
+  border-radius: 999rpx;
+  transition: all 0.2s;
+}
+
+.type-item.active {
+  background: #fff;
+  font-weight: 600;
+}
+
+.type-item.active.expense {
+  color: var(--expense);
+  box-shadow: 0 2rpx 8rpx rgba(242, 84, 75, 0.15);
+}
+
+.type-item.active.income {
+  color: var(--income);
+  box-shadow: 0 2rpx 8rpx rgba(31, 169, 113, 0.15);
+}
+
+/* 分类九宫格 */
+.cat-card {
+  padding: 24rpx 12rpx 12rpx;
+}
+
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cat-item {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12rpx 0 20rpx;
+}
+
+.cat-icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  border: 3rpx solid transparent;
+  transition: all 0.15s;
+}
+
+.cat-item.active .cat-icon {
+  border-color: var(--primary);
+  transform: scale(1.04);
+}
+
+.cat-name {
+  font-size: 22rpx;
+  color: var(--text-2);
+  margin-top: 8rpx;
+}
+
+.cat-item.active .cat-name {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.cat-loading {
+  text-align: center;
+  color: var(--text-3);
+  padding: 40rpx;
+}
+
+/* 表单 */
+.form-card {
+  padding: 8rpx 28rpx;
+  margin-top: 24rpx;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.form-row:last-child {
+  border-bottom: none;
+}
+
+.form-label {
+  width: 100rpx;
+  font-size: 28rpx;
+  color: var(--text-2);
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.form-placeholder {
+  color: var(--text-3);
+}
+
+.form-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+}
+
+.form-arrow {
+  color: var(--text-3);
+}
+
+/* 底部金额与按钮 */
+.bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(31, 35, 41, 0.06);
+  z-index: 30;
+}
+
+.amount-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 8rpx 8rpx 16rpx;
+}
+
+.amount-label {
+  font-size: 26rpx;
+  color: var(--text-2);
+}
+
+.amount-value {
+  display: flex;
+  align-items: baseline;
+}
+
+.amount-currency {
+  font-size: 32rpx;
+  color: var(--text-2);
+  margin-right: 6rpx;
+}
+
+.amount-num {
+  font-size: 56rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.amount-num.placeholder {
+  color: var(--text-3);
+}
+
+.bottom-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.again-btn {
+  width: 220rpx;
+  flex-shrink: 0;
+  height: 92rpx;
+  line-height: 92rpx;
+}
+
+.save-btn {
+  flex: 1;
+}
+
+.btn-primary[disabled],
+.btn-ghost[disabled] {
+  opacity: 0.45;
+}
+
+/* 键盘 */
+.keypad-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.28);
+  z-index: 40;
+}
+
+.keypad {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f7f8fa;
+  border-radius: 24rpx 24rpx 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 50;
+  box-shadow: 0 -8rpx 30rpx rgba(0, 0, 0, 0.12);
+}
+
+.keypad-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+}
+
+.keypad-amount {
+  font-size: 40rpx;
+  font-weight: 600;
+}
+
+.keypad-done {
+  color: var(--primary);
+  font-size: 28rpx;
+  font-weight: 500;
+  padding: 8rpx 16rpx;
+}
+
+.keypad-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12rpx;
+}
+
+.key {
+  width: calc(25% - 12rpx);
+  margin: 6rpx;
+  height: 104rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.key:active {
+  background: #e9edf5;
+}
+
+.key.fn {
+  background: #eef1f6;
+  color: var(--text-2);
+  font-size: 32rpx;
+}
+
+.key.zero {
+  width: calc(50% - 12rpx);
+}
+
+.key.ok {
+  width: calc(50% - 12rpx);
+  background: var(--primary);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+}

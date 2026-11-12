@@ -1,0 +1,103 @@
+<view class="page-plain add-page">
+  <!-- 收支类型 -->
+  <view class="type-switch">
+    <view
+      class="type-item {{type === 'expense' ? 'active expense' : ''}}"
+      data-type="expense"
+      bindtap="switchType"
+    >支出</view>
+    <view
+      class="type-item {{type === 'income' ? 'active income' : ''}}"
+      data-type="income"
+      bindtap="switchType"
+    >收入</view>
+  </view>
+
+  <!-- 分类 -->
+  <view class="card cat-card">
+    <view class="cat-grid">
+      <view
+        wx:for="{{shown}}"
+        wx:key="_id"
+        class="cat-item {{activeCategoryId === item._id ? 'active' : ''}}"
+        data-id="{{item._id}}"
+        bindtap="pickCategory"
+      >
+        <view class="cat-icon" style="background: {{item.color}}22">
+          <text>{{item.icon}}</text>
+        </view>
+        <text class="cat-name">{{item.name}}</text>
+      </view>
+    </view>
+    <view wx:if="{{!shown.length}}" class="cat-loading">分类加载中…</view>
+  </view>
+
+  <!-- 备注与日期 -->
+  <view class="card form-card">
+    <view class="form-row">
+      <text class="form-label">备注</text>
+      <input
+        class="form-input"
+        placeholder="写点什么，比如「午饭」"
+        placeholder-class="form-placeholder"
+        value="{{remark}}"
+        maxlength="50"
+        bindinput="onRemarkInput"
+      />
+    </view>
+    <picker mode="date" value="{{date}}" end="{{today}}" bindchange="onDateChange">
+      <view class="form-row">
+        <text class="form-label">日期</text>
+        <view class="form-value">
+          <text>{{date}}</text>
+          <text class="form-arrow">›</text>
+        </view>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 底部金额区 -->
+  <view class="bottom">
+    <view class="amount-bar" bindtap="openKeypad">
+      <text class="amount-label">金额</text>
+      <view class="amount-value">
+        <text class="amount-currency">¥</text>
+        <text class="amount-num num {{amountStr ? '' : 'placeholder'}}">{{amountStr || '0.00'}}</text>
+      </view>
+    </view>
+    <view class="bottom-actions">
+      <button class="btn-ghost again-btn" bindtap="onSaveAgain" disabled="{{!canSave || saving}}">再记一笔</button>
+      <button class="btn-primary save-btn" bindtap="onSave" disabled="{{!canSave || saving}}">
+        {{mode === 'edit' ? '保存修改' : '保存'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 数字键盘 -->
+  <view wx:if="{{keypadVisible}}" class="keypad-mask" bindtap="closeKeypad"></view>
+  <view wx:if="{{keypadVisible}}" class="keypad">
+    <view class="keypad-head">
+      <text class="keypad-amount">¥ {{amountStr || '0.00'}}</text>
+      <text class="keypad-done" bindtap="closeKeypad">完成</text>
+    </view>
+    <view class="keypad-grid">
+      <view class="key" data-key="1" bindtap="onKeyTap">1</view>
+      <view class="key" data-key="2" bindtap="onKeyTap">2</view>
+      <view class="key" data-key="3" bindtap="onKeyTap">3</view>
+      <view class="key fn" data-key="del" bindtap="onKeyTap">⌫</view>
+
+      <view class="key" data-key="4" bindtap="onKeyTap">4</view>
+      <view class="key" data-key="5" bindtap="onKeyTap">5</view>
+      <view class="key" data-key="6" bindtap="onKeyTap">6</view>
+      <view class="key fn" data-key="clear" bindtap="onKeyTap">C</view>
+
+      <view class="key" data-key="7" bindtap="onKeyTap">7</view>
+      <view class="key" data-key="8" bindtap="onKeyTap">8</view>
+      <view class="key" data-key="9" bindtap="onKeyTap">9</view>
+      <view class="key fn" data-key="." bindtap="onKeyTap">.</view>
+
+      <view class="key zero" data-key="0" bindtap="onKeyTap">0</view>
+      <view class="key ok" bindtap="onSave">保存</view>
+    </view>
+  </view>
+</view>

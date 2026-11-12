@@ -1,0 +1,70 @@
+<view class="page">
+  <view wx:if="{{!ready}}" class="empty">
+    <text class="empty-emoji">🔧</text>
+    <view>还没配置云开发环境</view>
+    <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
+  </view>
+
+  <block wx:else>
+    <!-- 月份 -->
+    <view class="month-bar">
+      <view class="month-arrow" bindtap="prevMonth">‹</view>
+      <picker mode="date" fields="month" value="{{month}}" bindchange="onMonthPick">
+        <view class="month-pick">{{monthText}} ▾</view>
+      </picker>
+      <view class="month-arrow" bindtap="nextMonth">›</view>
+    </view>
+
+    <!-- 收支切换 -->
+    <view class="type-switch">
+      <view class="type-item {{type === 'expense' ? 'active' : ''}}" data-type="expense" bindtap="switchType">支出</view>
+      <view class="type-item {{type === 'income' ? 'active' : ''}}" data-type="income" bindtap="switchType">收入</view>
+    </view>
+
+    <!-- 总额 -->
+    <view class="total-card">
+      <text class="total-label">本月{{type === 'expense' ? '支出' : '收入'}}合计</text>
+      <view class="total-value num {{type === 'income' ? 'money-income' : ''}}">{{totalText}}</view>
+      <text class="total-count">共 {{count}} 笔</text>
+    </view>
+
+    <!-- 分类占比 -->
+    <view class="section-title">分类占比</view>
+    <view wx:if="{{hasData}}" class="card ratio-card">
+      <view wx:for="{{rows}}" wx:key="id" class="ratio">
+        <view class="ratio-head">
+          <view class="ratio-name">
+            <text class="ratio-icon">{{item.icon}}</text>
+            <text>{{item.name}}</text>
+            <text class="ratio-count">{{item.count}}笔</text>
+          </view>
+          <view class="ratio-amount num">
+            <text>{{item.totalText}}</text>
+            <text class="ratio-percent">{{item.percent}}%</text>
+          </view>
+        </view>
+        <view class="ratio-track">
+          <view class="ratio-fill" style="width: {{item.percent}}%; background: {{item.color}}"></view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty">
+      <text class="empty-emoji">📊</text>
+      <view>这个月还没有{{type === 'expense' ? '支出' : '收入'}}记录</view>
+    </view>
+
+    <!-- 近 6 月趋势 -->
+    <view class="section-title">近 6 个月趋势</view>
+    <view class="card trend-card">
+      <view class="trend-bars">
+        <view wx:for="{{trend}}" wx:key="month" class="trend-col">
+          <text class="trend-value num">{{item.valueText}}</text>
+          <view class="trend-bar-wrap">
+            <view class="trend-bar {{item.isCurrent ? 'current' : ''}}" style="height: {{item.height}}%"></view>
+          </view>
+          <text class="trend-label {{item.isCurrent ? 'current' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

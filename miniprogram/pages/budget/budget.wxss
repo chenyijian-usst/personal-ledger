@@ -1,0 +1,113 @@
+.setup-btn {
+  width: 360rpx;
+  margin: 32rpx auto 0;
+}
+
+.head {
+  padding: 24rpx 8rpx 32rpx;
+}
+
+.head-month {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-3);
+}
+
+.head-title {
+  font-size: 44rpx;
+  font-weight: 600;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.input-card {
+  padding: 32rpx;
+}
+
+.input-label {
+  font-size: 24rpx;
+  color: var(--text-3);
+}
+
+.input-row {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 2rpx solid var(--line);
+  padding: 20rpx 0 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.input-currency {
+  font-size: 40rpx;
+  color: var(--text-2);
+  margin-right: 12rpx;
+}
+
+.input {
+  flex: 1;
+  font-size: 64rpx;
+  font-weight: 600;
+  height: 80rpx;
+}
+
+.input-placeholder {
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+.save {
+  width: 100%;
+}
+
+.stat-label {
+  font-size: 26rpx;
+  color: var(--text-2);
+}
+
+.stat-value {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.progress {
+  height: 16rpx;
+  background: #eef1f6;
+  border-radius: 999rpx;
+  margin: 20rpx 0 12rpx;
+  overflow: hidden;
+}
+
+.progress-inner {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #5b8cff, #3a6ff7);
+}
+
+.progress-inner.over {
+  background: linear-gradient(90deg, #ff8a80, #f2544b);
+}
+
+.foot {
+  margin-top: 4rpx;
+}
+
+.over-text {
+  color: var(--expense);
+  font-weight: 600;
+}
+
+.split {
+  height: 1rpx;
+  background: var(--line);
+  margin: 28rpx 0 24rpx;
+}
+
+.tip-row {
+  margin-top: 16rpx;
+}
+
+.note {
+  display: block;
+  padding: 32rpx 8rpx;
+  line-height: 1.7;
+}

@@ -1,0 +1,64 @@
+<view class="page-plain">
+  <view wx:if="{{!ready}}" class="empty">
+    <text class="empty-emoji">🔧</text>
+    <view>还没配置云开发环境</view>
+    <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
+  </view>
+
+  <block wx:else>
+    <view class="head">
+      <text class="head-month">{{monthText}}</text>
+      <text class="head-title">设一个支出上限</text>
+    </view>
+
+    <!-- 预算输入 -->
+    <view class="card input-card">
+      <text class="input-label">每月预算</text>
+      <view class="input-row">
+        <text class="input-currency">¥</text>
+        <input
+          class="input"
+          type="digit"
+          placeholder="0.00"
+          placeholder-class="input-placeholder"
+          value="{{input}}"
+          bindinput="onInput"
+        />
+      </view>
+      <button class="btn-primary save" bindtap="save">保存预算</button>
+    </view>
+
+    <!-- 本月进度 -->
+    <block wx:if="{{hasBudget}}">
+      <view class="section-title">本月执行情况</view>
+      <view class="card">
+        <view class="row-between">
+          <text class="stat-label">已花</text>
+          <text class="stat-value money-expense num">{{spentText}}</text>
+        </view>
+        <view class="progress">
+          <view class="progress-inner {{over ? 'over' : ''}}" style="width: {{percent}}%"></view>
+        </view>
+        <view class="row-between foot">
+          <text class="hint">{{percent}}% 已使用</text>
+          <text class="hint {{over ? 'over-text' : ''}}">{{over ? '已超支' : '剩余'}} {{leftText}}</text>
+        </view>
+
+        <view class="split"></view>
+
+        <view class="row-between">
+          <text class="stat-label">距离月底还有</text>
+          <text class="stat-value num">{{daysLeft}} 天</text>
+        </view>
+        <view class="row-between tip-row" wx:if="{{!over}}">
+          <text class="stat-label">每天还能花</text>
+          <text class="stat-value num">{{dailyText}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view class="hint note">
+      预算是按月记的，换月需要重新设置。记账时如果本月支出超过预算，保存后会自动提醒。
+    </view>
+  </block>
+</view>

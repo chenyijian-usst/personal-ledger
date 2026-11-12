@@ -1,0 +1,77 @@
+<view class="page">
+  <view wx:if="{{!ready}}" class="empty">
+    <text class="empty-emoji">🔧</text>
+    <view>还没配置云开发环境</view>
+    <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
+  </view>
+
+  <block wx:else>
+    <!-- 月份切换 -->
+    <view class="month-bar">
+      <view class="month-arrow" bindtap="prevMonth">‹</view>
+      <picker mode="date" fields="month" value="{{month}}" bindchange="onMonthPick">
+        <view class="month-pick">
+          <text>{{monthText}}</text>
+          <text class="month-caret">▾</text>
+        </view>
+      </picker>
+      <view class="month-arrow" bindtap="nextMonth">›</view>
+    </view>
+
+    <!-- 汇总 -->
+    <view class="summary">
+      <view class="summary-item">
+        <text class="summary-label">支出</text>
+        <text class="summary-value money-expense num">{{expense}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">收入</text>
+        <text class="summary-value money-income num">{{income}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">笔数</text>
+        <text class="summary-value num">{{count}}</text>
+      </view>
+    </view>
+
+    <!-- 分组列表 -->
+    <block wx:for="{{groups}}" wx:key="date" wx:for-item="group">
+      <view class="group-head">
+        <text class="group-day">{{group.label}}</text>
+        <text class="group-weekday">{{group.weekday}}</text>
+        <text class="group-summary">{{group.summary}}</text>
+      </view>
+      <view class="card group-card">
+        <view
+          wx:for="{{group.items}}"
+          wx:key="id"
+          class="record"
+          data-id="{{item.id}}"
+          data-name="{{item.name}}"
+          bindtap="onItemTap"
+          bindlongpress="onItemLongPress"
+        >
+          <view class="record-icon">{{item.icon}}</view>
+          <view class="record-main">
+            <view class="record-name">{{item.name}}</view>
+            <view wx:if="{{item.remark}}" class="record-remark">{{item.remark}}</view>
+          </view>
+          <text class="record-amount num {{item.isIncome ? 'money-income' : 'money-expense'}}">{{item.amountText}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{!groups.length && !loading}}" class="empty">
+      <text class="empty-emoji">🗓</text>
+      <view>这个月还没有记录</view>
+      <view class="hint">长按某条记录可以删除</view>
+    </view>
+
+    <view class="tip">长按一条记录可以删除</view>
+
+    <view class="fab" bindtap="goAdd">
+      <text class="fab-plus">＋</text>
+      <text class="fab-text">记一笔</text>
+    </view>
+  </block>
+</view>

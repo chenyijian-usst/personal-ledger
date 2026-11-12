@@ -1,0 +1,42 @@
+<view class="page-plain">
+  <view class="profile">
+    <view class="avatar">🧾</view>
+    <view class="col">
+      <text class="profile-title">我的账本</text>
+      <text class="hint">只给自己看的收支记录</text>
+    </view>
+  </view>
+
+  <view class="card menu">
+    <view
+      wx:for="{{entries}}"
+      wx:key="key"
+      class="menu-item"
+      data-key="{{item.key}}"
+      bindtap="onEntryTap"
+    >
+      <text class="menu-icon">{{item.icon}}</text>
+      <view class="menu-main">
+        <text class="menu-label">{{item.label}}</text>
+        <text class="menu-desc">{{item.desc}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="card menu">
+    <view class="menu-item" bindtap="goSetup">
+      <text class="menu-icon">⚙️</text>
+      <view class="menu-main">
+        <text class="menu-label">环境与部署</text>
+        <text class="menu-desc">{{ready ? '云开发已连接' : '还没配置云开发'}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="hint">个人记账 v{{version}}</text>
+    <text class="hint">数据存在你自己的云开发环境里</text>
+  </view>
+</view>

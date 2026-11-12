@@ -1,0 +1,30 @@
+<view class="page-plain">
+  <view class="head">
+    <text class="head-emoji">🛠</text>
+    <view class="head-title">配置一次，之后只管记账</view>
+    <view class="hint">全部免费，大约 5 分钟</view>
+  </view>
+
+  <view wx:if="{{envId}}" class="card env-card">
+    <view class="col">
+      <text class="hint">当前环境 ID</text>
+      <text class="env-value">{{envId}}</text>
+    </view>
+    <button class="btn-ghost env-copy" bindtap="copyEnvId">复制</button>
+  </view>
+
+  <view wx:for="{{steps}}" wx:key="title" class="card step">
+    <view class="step-head">
+      <text class="step-no">{{index + 1}}</text>
+      <text class="step-title">{{item.title}}</text>
+    </view>
+    <view class="step-desc">{{item.desc}}</view>
+    <view class="step-code">{{item.code}}</view>
+  </view>
+
+  <view class="notice">
+    遇到报错先看这两点：① config.js 的 envId 是否和云开发控制台一致；② cloudfunctions/api 是否上传成功（云开发控制台 - 云函数列表里能看到 api）。
+  </view>
+
+  <button class="btn-primary recheck" bindtap="recheck">我改好了，重新检测</button>
+</view>

@@ -1,0 +1,74 @@
+.profile {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 8rpx 40rpx;
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 32rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+  margin-right: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(31, 35, 41, 0.05);
+}
+
+.profile-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+
+.menu {
+  padding: 4rpx 28rpx;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon {
+  width: 64rpx;
+  font-size: 34rpx;
+}
+
+.menu-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-label {
+  font-size: 29rpx;
+  font-weight: 500;
+}
+
+.menu-desc {
+  font-size: 23rpx;
+  color: var(--text-3);
+  margin-top: 4rpx;
+}
+
+.menu-arrow {
+  color: var(--text-3);
+  font-size: 36rpx;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 48rpx 0 16rpx;
+}

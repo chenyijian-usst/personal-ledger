@@ -1,0 +1,183 @@
+.setup-btn {
+  width: 360rpx;
+  margin: 32rpx auto 0;
+}
+
+/* 月份条 */
+.month-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 0 20rpx;
+}
+
+.month-arrow {
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: var(--text-2);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2rpx 8rpx rgba(31, 35, 41, 0.05);
+}
+
+.month-pick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 260rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.month-caret {
+  font-size: 22rpx;
+  color: var(--text-3);
+  margin-left: 8rpx;
+}
+
+/* 汇总 */
+.summary {
+  display: flex;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 0;
+  box-shadow: 0 2rpx 12rpx rgba(31, 35, 41, 0.04);
+}
+
+.summary-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1rpx solid var(--line);
+}
+
+.summary-item:last-child {
+  border-right: none;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  color: var(--text-3);
+}
+
+.summary-value {
+  font-size: 34rpx;
+  font-weight: 600;
+  margin-top: 6rpx;
+}
+
+/* 分组 */
+.group-head {
+  display: flex;
+  align-items: baseline;
+  padding: 32rpx 8rpx 12rpx;
+}
+
+.group-day {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.group-weekday {
+  font-size: 22rpx;
+  color: var(--text-3);
+  margin-left: 8rpx;
+}
+
+.group-summary {
+  margin-left: auto;
+  font-size: 22rpx;
+  color: var(--text-3);
+}
+
+.group-card {
+  padding: 4rpx 28rpx;
+}
+
+.record {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.record:last-child {
+  border-bottom: none;
+}
+
+.record-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #f4f6fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.record-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.record-name {
+  font-size: 29rpx;
+  font-weight: 500;
+}
+
+.record-remark {
+  font-size: 23rpx;
+  color: var(--text-3);
+  margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-amount {
+  font-size: 30rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.tip {
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-3);
+  padding: 32rpx 0 8rpx;
+}
+
+.fab {
+  position: fixed;
+  right: 32rpx;
+  bottom: calc(140rpx + env(safe-area-inset-bottom));
+  height: 92rpx;
+  padding: 0 32rpx;
+  border-radius: 999rpx;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 24rpx rgba(58, 111, 247, 0.35);
+  z-index: 20;
+}
+
+.fab-plus {
+  font-size: 40rpx;
+  margin-right: 8rpx;
+  line-height: 1;
+}
+
+.fab-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}

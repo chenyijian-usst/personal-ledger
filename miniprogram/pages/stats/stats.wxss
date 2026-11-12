@@ -1,0 +1,209 @@
+.setup-btn {
+  width: 360rpx;
+  margin: 32rpx auto 0;
+}
+
+.month-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 0 20rpx;
+}
+
+.month-arrow {
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: var(--text-2);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2rpx 8rpx rgba(31, 35, 41, 0.05);
+}
+
+.month-pick {
+  min-width: 260rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.type-switch {
+  display: flex;
+  background: #eceff4;
+  border-radius: 999rpx;
+  padding: 6rpx;
+  margin-bottom: 24rpx;
+}
+
+.type-item {
+  flex: 1;
+  text-align: center;
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 26rpx;
+  color: var(--text-2);
+  border-radius: 999rpx;
+}
+
+.type-item.active {
+  background: #fff;
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(31, 35, 41, 0.08);
+}
+
+/* 总额 */
+.total-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 12rpx rgba(31, 35, 41, 0.04);
+}
+
+.total-label {
+  font-size: 24rpx;
+  color: var(--text-3);
+}
+
+.total-value {
+  font-size: 64rpx;
+  font-weight: 600;
+  margin: 8rpx 0;
+  color: var(--expense);
+}
+
+.total-value.money-income {
+  color: var(--income);
+}
+
+.total-count {
+  font-size: 23rpx;
+  color: var(--text-3);
+}
+
+/* 占比 */
+.ratio-card {
+  padding: 12rpx 28rpx;
+}
+
+.ratio {
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.ratio:last-child {
+  border-bottom: none;
+}
+
+.ratio-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.ratio-name {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+}
+
+.ratio-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.ratio-count {
+  font-size: 22rpx;
+  color: var(--text-3);
+  margin-left: 10rpx;
+}
+
+.ratio-amount {
+  display: flex;
+  align-items: baseline;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.ratio-percent {
+  font-size: 22rpx;
+  color: var(--text-3);
+  font-weight: 400;
+  margin-left: 10rpx;
+  width: 70rpx;
+  text-align: right;
+}
+
+.ratio-track {
+  height: 12rpx;
+  background: #f1f3f7;
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+
+.ratio-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  min-width: 6rpx;
+  transition: width 0.3s ease;
+}
+
+/* 趋势 */
+.trend-card {
+  padding: 24rpx 16rpx 16rpx;
+}
+
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+
+.trend-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trend-value {
+  font-size: 20rpx;
+  color: var(--text-3);
+  margin-bottom: 8rpx;
+  transform: scale(0.92);
+}
+
+.trend-bar-wrap {
+  height: 220rpx;
+  width: 44rpx;
+  background: #f4f6fa;
+  border-radius: 10rpx;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.trend-bar {
+  width: 100%;
+  border-radius: 10rpx;
+  background: #c7d6fb;
+}
+
+.trend-bar.current {
+  background: var(--primary);
+}
+
+.trend-label {
+  font-size: 22rpx;
+  color: var(--text-3);
+  margin-top: 10rpx;
+}
+
+.trend-label.current {
+  color: var(--primary);
+  font-weight: 600;
+}

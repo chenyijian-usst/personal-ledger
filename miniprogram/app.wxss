@@ -1,0 +1,158 @@
+/* 全局样式：一套克制的中性色 + 一个主色，够用就好 */
+page {
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --text: #1f2329;
+  --text-2: #646a73;
+  --text-3: #a3a8b3;
+  --line: #eef0f3;
+  --primary: #3a6ff7;
+  --primary-soft: #eaf0ff;
+  --expense: #f2544b;
+  --income: #1fa971;
+  --warn: #f59e0b;
+
+  background: var(--bg);
+  color: var(--text);
+  font-size: 28rpx;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+view,
+text,
+button,
+input,
+scroll-view {
+  box-sizing: border-box;
+}
+
+/* 页面容器：底部给 tabBar 和悬浮按钮留出空间 */
+.page {
+  min-height: 100vh;
+  padding: 24rpx 24rpx calc(180rpx + env(safe-area-inset-bottom));
+}
+
+.page-plain {
+  min-height: 100vh;
+  padding: 24rpx 24rpx calc(40rpx + env(safe-area-inset-bottom));
+}
+
+.card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(31, 35, 41, 0.04);
+}
+
+.card + .card {
+  margin-top: 24rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.muted {
+  color: var(--text-2);
+}
+
+.hint {
+  color: var(--text-3);
+  font-size: 24rpx;
+}
+
+.section-title {
+  font-size: 26rpx;
+  color: var(--text-2);
+  margin: 32rpx 8rpx 16rpx;
+  font-weight: 500;
+}
+
+.money-expense {
+  color: var(--expense);
+}
+
+.money-income {
+  color: var(--income);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* 主按钮 */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-ghost {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 999rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  text-align: center;
+  border: none;
+}
+
+.btn-ghost::after {
+  border: none;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  background: none;
+  line-height: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+/* 空状态 */
+.empty {
+  padding: 120rpx 40rpx;
+  text-align: center;
+  color: var(--text-3);
+}
+
+.empty-emoji {
+  font-size: 72rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+/* 底部安全区占位 */
+.safe-bottom {
+  height: calc(24rpx + env(safe-area-inset-bottom));
+}
