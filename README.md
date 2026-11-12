@@ -95,6 +95,13 @@ $env:NODE_PATH="$PWD\tools\stub"; node tools/test-cloud.js
 NODE_PATH=tools/stub node tools/test-cloud.js
 ```
 
+```bash
+# 页面运行时测试：用 wx / Page / getApp 替身把每个页面真跑一遍（载入、点击、保存、导入、导出）
+$env:NODE_PATH="$PWD\tools\stub"; node tools/test-pages.js
+```
+
+三套加起来：37 个云函数用例 + 25 个页面用例 + 静态检查，全部在本地几秒内跑完，不需要开发者工具和云环境。
+
 ## 数据模型
 
 ```js

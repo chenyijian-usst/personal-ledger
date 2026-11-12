@@ -181,7 +181,6 @@
 
 .bottom-actions {
   display: flex;
-  gap: 20rpx;
 }
 
 .again-btn {
@@ -189,6 +188,7 @@
   flex-shrink: 0;
   height: 92rpx;
   line-height: 92rpx;
+  margin-right: 20rpx;
 }
 
 .save-btn {

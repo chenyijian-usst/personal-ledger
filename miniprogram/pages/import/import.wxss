@@ -199,7 +199,6 @@
 /* 底部按钮 */
 .actions {
   display: flex;
-  gap: 20rpx;
   margin-top: 32rpx;
 }
 
@@ -208,6 +207,7 @@
   height: 92rpx;
   line-height: 92rpx;
   flex-shrink: 0;
+  margin-right: 20rpx;
 }
 
 .do-import {

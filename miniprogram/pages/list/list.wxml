@@ -64,10 +64,10 @@
     <view wx:if="{{!groups.length && !loading}}" class="empty">
       <text class="empty-emoji">🗓</text>
       <view>这个月还没有记录</view>
-      <view class="hint">长按某条记录可以删除</view>
+      <view class="hint">点右下角「记一笔」开始</view>
     </view>
 
-    <view class="tip">长按一条记录可以删除</view>
+    <view wx:if="{{groups.length}}" class="tip">长按一条记录可以删除</view>
 
     <view class="fab" bindtap="goAdd">
       <text class="fab-plus">＋</text>
