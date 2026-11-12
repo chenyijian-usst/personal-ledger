@@ -5,6 +5,7 @@ const money = require('../../utils/money')
 Page({
   data: {
     ready: false,
+    localMode: false,
     loading: true,
     month: '',
     monthText: '',
@@ -25,12 +26,16 @@ Page({
     const app = getApp()
     const month = app.globalData.month || dateUtil.currentMonth()
     app.globalData.month = month
-    this.setData({ month: month, monthText: dateUtil.monthLabel(month) })
+    this.setData({
+      month: month,
+      monthText: dateUtil.monthLabel(month),
+      localMode: !!app.globalData.localMode
+    })
   },
 
   onShow() {
     const app = getApp()
-    this.setData({ ready: !!app.globalData.ready })
+    this.setData({ ready: !!app.globalData.ready, localMode: !!app.globalData.localMode })
     // 在别的页面切过月份时，首页跟着切到同一个月
     if (app.globalData.month && app.globalData.month !== this.data.month) {
       this.setData({

@@ -13,6 +13,12 @@
     <button class="btn-ghost env-copy" bindtap="copyEnvId">复制</button>
   </view>
 
+  <view wx:if="{{!envId}}" class="card demo-card">
+    <view class="demo-title">现在处于演示模式</view>
+    <view class="demo-desc">没填环境 ID 时，数据存在这台设备的本机存储里，可以先完整试用一遍。填好 envId 并上传云函数后会自动切到云开发；演示数据不会带过去。</view>
+    <button class="btn-ghost demo-reset" bindtap="resetDemo">清空演示数据</button>
+  </view>
+
   <view wx:for="{{steps}}" wx:key="title" class="card step">
     <view class="step-head">
       <text class="step-no">{{index + 1}}</text>

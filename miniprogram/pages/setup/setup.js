@@ -53,5 +53,22 @@ Page({
         if (res.confirm) wx.reLaunch({ url: '/pages/index/index' })
       }
     })
+  },
+
+  /** 演示模式：清空本机样例数据，回到刚打开时的样子 */
+  resetDemo() {
+    wx.showModal({
+      title: '清空演示数据',
+      content: '会删掉这台设备上演示模式下记的所有账，云开发里的数据不受影响。',
+      confirmColor: '#f2544b',
+      success: (res) => {
+        if (!res.confirm) return
+        const localdb = require('../../utils/localdb')
+        localdb.reset()
+        getApp().globalData.categories = null
+        wx.showToast({ title: '已清空', icon: 'success' })
+        setTimeout(() => wx.reLaunch({ url: '/pages/index/index' }), 600)
+      }
+    })
   }
 })

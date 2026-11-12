@@ -8,6 +8,12 @@
   </view>
 
   <block wx:else>
+    <!-- 演示模式提示 -->
+    <view wx:if="{{localMode}}" class="demo-banner" bindtap="goSetup">
+      <text class="demo-tag">演示模式</text>
+      <text class="demo-text">数据只存在这台设备上，点这里换成云开发</text>
+    </view>
+
     <!-- 本月概览 -->
     <view class="hero">
       <view class="hero-head">

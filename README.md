@@ -45,8 +45,9 @@ cloudfunctions/api/        唯一的数据接口云函数（action 路由）
   package.json             只依赖 wx-server-sdk
 miniprogram/
   app.js / app.json        入口、页面与 tabBar
-  config.js                ← 只需要改这里：填云开发环境 ID
-  utils/api.js             云函数调用封装（统一错误、只读接口自动重试一次）
+  config.js                ← 只需要改这里：填云开发环境 ID（留空 = 演示模式）
+  utils/api.js             云函数调用封装（没配 envId 时自动转到 localdb）
+  utils/localdb.js         演示模式：本机 storage 实现同一套 action
   utils/money.js           金额：元 ↔ 分，整数运算
   utils/date.js            月份区间、今天/昨天、星期
   pages/index/             首页：本月概览、预算进度、最近记录
@@ -66,6 +67,24 @@ tools/
   test-cloud.js            云函数逻辑回归测试（内存数据库）
   stub/wx-server-sdk/      上面测试用的 wx-server-sdk 替身
 ```
+
+## 先试试：不用 AppID 的演示模式
+
+没注册小程序、没开通云开发，也能把界面完整点一遍。
+
+1. 装[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)，用微信扫码登录
+2. 「导入项目」→ 选这个目录 → 点「测试号」/「游客模式」也可以，AppID 不用改
+3. 打开就能用：首次进入会**自动写入 8 条样例账单和一个月预算**，四个 tab、记一笔、预算、分类管理、导出全部可用
+
+怎么实现的：`utils/api.js` 在 `envId` 为空时，把所有 `action` 转发给 `utils/localdb.js`（数据存在 `wx.storage`）。接口名、返回结构、页面代码**一行都不用改**，所以演示时看到的就是真正跑起来的样子。
+
+限制（会在界面上明说）：
+
+- 数据只存在这台设备，换机/清缓存就没了；换成云开发后演示数据不会同步过去
+- 账单导入不可用（GBK 解码依赖云函数的 Node 环境）
+- 首页顶部有一条黄色「演示模式」提示，点它进配置说明，那里可以清空演示数据
+
+也可以不进开发者工具、先看设计：直接双击 **`docs/preview.html`**（静态渲染稿，含首页/明细/记一笔/统计四屏）。
 
 ## 跑起来（约 5 分钟）
 

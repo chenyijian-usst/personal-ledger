@@ -29,7 +29,7 @@
       <text class="menu-icon">⚙️</text>
       <view class="menu-main">
         <text class="menu-label">环境与部署</text>
-        <text class="menu-desc">{{ready ? '云开发已连接' : '还没配置云开发'}}</text>
+        <text class="menu-desc">{{localMode ? '演示模式：数据存在本机' : (ready ? '云开发已连接' : '还没配置云开发')}}</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>

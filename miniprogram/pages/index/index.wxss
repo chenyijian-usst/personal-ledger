@@ -23,6 +23,32 @@
   width: 100%;
 }
 
+/* 演示模式横幅 */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  background: #fff7e6;
+  border: 1rpx solid #ffe0a3;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.demo-tag {
+  flex-shrink: 0;
+  font-size: 21rpx;
+  color: #b26a00;
+  background: #ffe7ba;
+  border-radius: 8rpx;
+  padding: 4rpx 12rpx;
+  margin-right: 14rpx;
+}
+
+.demo-text {
+  font-size: 23rpx;
+  color: #8a6d3b;
+}
+
 /* 顶部结余卡 */
 .hero {
   background: linear-gradient(135deg, #3a6ff7 0%, #5b8cff 100%);

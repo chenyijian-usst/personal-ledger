@@ -34,7 +34,19 @@ const log = {
 
 const files = {}
 
+/** 演示模式用的本机存储替身 */
+const storage = new Map()
+
 const wxStub = {
+  getStorageSync(key) {
+    return storage.has(key) ? storage.get(key) : ''
+  },
+  setStorageSync(key, value) {
+    storage.set(key, JSON.parse(JSON.stringify(value)))
+  },
+  removeStorageSync(key) {
+    storage.delete(key)
+  },
   cloud: {
     init() {},
     callFunction(options) {
@@ -594,6 +606,82 @@ async function testSetupAndMe() {
   })
 }
 
+/* ------------------------------ 演示模式 ------------------------------ */
+
+async function testDemoMode() {
+  console.log('\n[演示模式：没有云环境也能用]')
+  const api = require('../miniprogram/utils/api')
+  const now = new Date()
+  const month =
+    now.getFullYear() + '-' + (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1)
+
+  config.envId = ''
+  app.globalData.localMode = true
+  app.globalData.ready = true
+  app.globalData.month = month
+
+  await run('首页直接用本机演示数据，并提示处于演示模式', async () => {
+    const page = loadPage('pages/index/index')
+    page.onLoad()
+    await page.onShow()
+    await settle()
+
+    assert.strictEqual(page.data.localMode, true)
+    assert.strictEqual(page.data.ready, true)
+    assert.ok(Number(page.data.expense) > 0, '演示数据应有支出')
+    assert.ok(page.data.recent.length > 0)
+    assert.strictEqual(page.data.hasBudget, true)
+  })
+
+  await run('其余三个 tab 在演示模式下都能载入', async () => {
+    const list = loadPage('pages/list/list')
+    list.onLoad()
+    list.onShow()
+    await settle()
+    assert.ok(list.data.groups.length > 0, '明细应有数据')
+
+    const stats = loadPage('pages/stats/stats')
+    stats.onLoad()
+    stats.onShow()
+    await settle()
+    assert.ok(stats.data.rows.length > 0, '统计应有分类占比')
+
+    const budget = loadPage('pages/budget/budget')
+    budget.onLoad({ month: month })
+    budget.onShow()
+    await settle()
+    assert.strictEqual(budget.data.hasBudget, true)
+  })
+
+  await run('演示模式下记一笔也能存进本机', async () => {
+    const before = (await api.call('record.month', { month: month })).records.length
+    const page = loadPage('pages/add/add')
+    page.onLoad({})
+    await settle()
+    ;['8', '8'].forEach((key) => page.onKeyTap(tap({ key: key })))
+    page.onSave()
+    await settle(20)
+
+    const after = (await api.call('record.month', { month: month })).records.length
+    assert.strictEqual(after, before + 1)
+  })
+
+  await run('演示模式不支持的导入会明确报错', async () => {
+    let message = ''
+    try {
+      await api.call('import.parse', { text: 'x' })
+    } catch (err) {
+      message = err.message
+    }
+    assert.ok(message.indexOf('演示模式') >= 0, '应提示演示模式不支持，实际：' + message)
+  })
+
+  // 恢复云开发测试环境，避免影响别的用例
+  config.envId = 'test-env'
+  app.globalData.localMode = false
+  app.globalData.month = '2026-11'
+}
+
 async function main() {
   console.log('页面运行时测试（wx / Page / getApp 替身 + 云函数内存数据库）')
   try {
@@ -612,6 +700,7 @@ async function main() {
   await testCategory()
   await testExport()
   await testSetupAndMe()
+  await testDemoMode()
 
   console.log('\n' + (failures.length ? '有失败用例：' : '全部通过：') + passed + ' 个用例')
   if (failures.length) {

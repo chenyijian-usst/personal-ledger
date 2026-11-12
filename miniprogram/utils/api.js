@@ -6,6 +6,12 @@
  */
 
 const config = require('../config')
+const localdb = require('./localdb')
+
+/** 没配置云开发环境时，全部走本机演示数据（见 utils/localdb.js） */
+function isLocalMode() {
+  return !config.envId
+}
 
 /** 只读接口：失败可以安全重试；写接口一律不重试，避免重复记账 */
 const READ_ACTIONS = /^(category\.list|record\.month|record\.overview|record\.trend|record\.get|budget\.get)$/
@@ -77,6 +83,8 @@ function callOnce(action, data) {
  * @returns {Promise<any>} 成功时 resolve 云函数返回的 data
  */
 function call(action, data) {
+  if (isLocalMode()) return localdb.call(action, data)
+
   const retry = READ_ACTIONS.test(action) ? 1 : 0
   const attempt = (left) =>
     callOnce(action, data).catch((err) => {
@@ -114,5 +122,6 @@ async function ensureCategories(force) {
 module.exports = {
   call,
   callWithToast,
-  ensureCategories
+  ensureCategories,
+  isLocalMode
 }

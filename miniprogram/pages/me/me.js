@@ -3,6 +3,7 @@ const dateUtil = require('../../utils/date')
 Page({
   data: {
     ready: false,
+    localMode: false,
     version: '0.1.0',
     monthText: '',
     entries: []
@@ -21,7 +22,8 @@ Page({
   },
 
   onShow() {
-    this.setData({ ready: !!getApp().globalData.ready })
+    const app = getApp()
+    this.setData({ ready: !!app.globalData.ready, localMode: !!app.globalData.localMode })
   },
 
   onEntryTap(e) {
