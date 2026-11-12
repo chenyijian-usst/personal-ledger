@@ -26,11 +26,17 @@ Page({
 
   onEntryTap(e) {
     const key = e.currentTarget.dataset.key
-    if (key === 'budget') {
-      wx.navigateTo({ url: '/pages/budget/budget' })
+    const routes = {
+      budget: '/pages/budget/budget',
+      category: '/pages/category/category',
+      import: '/pages/import/import',
+      export: '/pages/export/export'
+    }
+    if (routes[key]) {
+      wx.navigateTo({ url: routes[key] })
       return
     }
-    wx.showToast({ title: '下一版就做这个', icon: 'none' })
+    wx.showToast({ title: '还没做这个', icon: 'none' })
   },
 
   goSetup() {

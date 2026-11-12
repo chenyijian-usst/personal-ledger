@@ -1,0 +1,66 @@
+.setup-btn {
+  width: 360rpx;
+  margin: 32rpx auto 0;
+}
+
+.head {
+  padding: 16rpx 8rpx 24rpx;
+}
+
+.head-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 600;
+  margin-bottom: 10rpx;
+}
+
+.month-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 0 24rpx;
+}
+
+.month-arrow {
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: var(--text-2);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2rpx 8rpx rgba(31, 35, 41, 0.05);
+}
+
+.month-pick {
+  min-width: 260rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.stat-row {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-num {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.export-btn {
+  width: 100%;
+  margin-top: 32rpx;
+}
+
+.note {
+  display: block;
+  padding: 28rpx 8rpx;
+  line-height: 1.7;
+}

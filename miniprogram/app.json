@@ -6,6 +6,9 @@
     "pages/stats/stats",
     "pages/budget/budget",
     "pages/me/me",
+    "pages/import/import",
+    "pages/category/category",
+    "pages/export/export",
     "pages/setup/setup"
   ],
   "window": {

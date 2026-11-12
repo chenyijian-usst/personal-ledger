@@ -9,6 +9,7 @@
  */
 
 const cloud = require('wx-server-sdk')
+const csv = require('./csv')
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
@@ -31,6 +32,17 @@ function fail(msg) {
 
 function assert(cond, msg) {
   if (!cond) fail(msg)
+}
+
+/** 取单条文档，不存在时返回 null（不同版本 SDK 抛错行为不一致，统一兜住） */
+async function getDocOrNull(collection, id) {
+  if (!id) return null
+  try {
+    const res = await db.collection(collection).doc(id).get()
+    return res.data || null
+  } catch (err) {
+    return null
+  }
 }
 
 function toInt(value) {
@@ -229,9 +241,10 @@ function normalizeRecordInput(input) {
 
 async function categorySnapshot(uid, categoryId) {
   if (!categoryId) return { categoryName: '未分类', categoryIcon: '📦', categoryColor: '#90A4AE' }
-  const res = await db.collection(COL_CATEGORIES).doc(categoryId).get()
-  const doc = res.data || {}
-  if (doc.uid !== uid) return { categoryName: '未分类', categoryIcon: '📦', categoryColor: '#90A4AE' }
+  const doc = await getDocOrNull(COL_CATEGORIES, categoryId)
+  if (!doc || doc.uid !== uid) {
+    return { categoryName: '未分类', categoryIcon: '📦', categoryColor: '#90A4AE' }
+  }
   return {
     categoryName: doc.name || '未分类',
     categoryIcon: doc.icon || '📦',
@@ -257,8 +270,8 @@ async function addRecord(uid, input) {
 
 async function updateRecord(uid, input) {
   assert(!!input.id, '缺少记录 ID')
-  const existed = await db.collection(COL_RECORDS).doc(input.id).get()
-  assert(existed.data && existed.data.uid === uid, '记录不存在')
+  const existed = await getDocOrNull(COL_RECORDS, input.id)
+  assert(existed && existed.uid === uid, '记录不存在')
 
   const base = normalizeRecordInput(input)
   const snapshot = await categorySnapshot(uid, base.categoryId)
@@ -273,8 +286,8 @@ async function updateRecord(uid, input) {
 
 async function removeRecord(uid, id) {
   assert(!!id, '缺少记录 ID')
-  const existed = await db.collection(COL_RECORDS).doc(id).get()
-  assert(existed.data && existed.data.uid === uid, '记录不存在')
+  const existed = await getDocOrNull(COL_RECORDS, id)
+  assert(existed && existed.uid === uid, '记录不存在')
   await db.collection(COL_RECORDS).doc(id).remove()
   return { id: id }
 }
@@ -294,21 +307,49 @@ async function monthDetail(uid, month, opts) {
 }
 
 async function trend(uid, months) {
-  const list = Array.isArray(months) ? months.slice(0, 12) : []
-  const out = []
-  for (let i = 0; i < list.length; i++) {
-    const month = list[i]
-    if (!validMonth(month)) continue
-    const edge = monthEdge(month)
-    const records = await fetchRange(uid, edge.start, edge.end, 3000)
-    const totals = { expense: 0, income: 0 }
-    records.forEach((item) => {
-      const type = item.type === 'income' ? 'income' : 'expense'
-      totals[type] += item.amountFen
-    })
-    out.push({ month: month, expense: totals.expense, income: totals.income })
+  const list = (Array.isArray(months) ? months : []).filter(validMonth).slice(0, 12)
+  if (!list.length) return []
+
+  // 一次把首尾月份之间的记录取回来，再在内存里按月分组：
+  // 原来每个月查一次，6 个月要 6 次往返，现在只要 1 次。
+  const sorted = list.slice().sort()
+  const start = monthEdge(sorted[0]).start
+  const end = monthEdge(sorted[sorted.length - 1]).end
+  const records = await fetchRange(uid, start, end, 6000)
+
+  const map = {}
+  list.forEach((month) => {
+    map[month] = { month: month, expense: 0, income: 0 }
+  })
+  records.forEach((item) => {
+    const month = String(item.date).slice(0, 7)
+    if (!map[month]) return
+    map[month][item.type === 'income' ? 'income' : 'expense'] += item.amountFen
+  })
+  return list.map((month) => map[month])
+}
+
+/**
+ * 首页专用：一次请求拿到「本月总额 + 分类汇总 + 最近几条 + 预算」，
+ * 不再把整月明细都传给客户端
+ */
+async function overview(uid, month, recentCount) {
+  assert(validMonth(month), '月份不正确')
+  const edge = monthEdge(month)
+  const records = await fetchRange(uid, edge.start, edge.end, 3000)
+  const summary = summarize(records)
+  const limit = Math.min(20, Math.max(1, Number(recentCount) || 8))
+  const budget = await getBudget(uid, month)
+
+  return {
+    month: month,
+    daysInMonth: edge.days,
+    count: records.length,
+    totals: summary.totals,
+    byCategory: summary.byCategory.slice(0, 30),
+    recent: records.slice(0, limit),
+    budget: budget ? { amountFen: budget.amountFen } : null
   }
-  return out
 }
 
 /* ------------------------------ 导入 ------------------------------ */
@@ -444,10 +485,15 @@ exports.main = async (event) => {
           icon: cleanText(event.icon, 8) || '📦',
           color: cleanText(event.color, 16) || '#90A4AE',
           type: type,
-          sort: Number.isFinite(Number(event.sort)) ? Number(event.sort) : 999,
           updatedAt: Date.now()
         }
+        // 只有显式传了 sort 才改排序，编辑时不会把顺序打乱
+        if (event.sort !== undefined && Number.isFinite(Number(event.sort))) {
+          payload.sort = Number(event.sort)
+        }
         if (event.id) {
+          const existed = await getDocOrNull(COL_CATEGORIES, event.id)
+          assert(existed && existed.uid === uid, '分类不存在')
           await db.collection(COL_CATEGORIES).doc(event.id).update({ data: payload })
           return { ok: true, data: { id: event.id } }
         }
@@ -459,6 +505,8 @@ exports.main = async (event) => {
 
       case 'category.remove': {
         assert(!!event.id, '缺少分类 ID')
+        const existed = await getDocOrNull(COL_CATEGORIES, event.id)
+        assert(existed && existed.uid === uid, '分类不存在')
         await db.collection(COL_CATEGORIES).doc(event.id).remove()
         return { ok: true, data: { id: event.id } }
       }
@@ -482,6 +530,9 @@ exports.main = async (event) => {
       case 'record.month':
         return { ok: true, data: await monthDetail(uid, event.month, { max: event.max }) }
 
+      case 'record.overview':
+        return { ok: true, data: await overview(uid, event.month, event.recent) }
+
       case 'record.trend':
         return { ok: true, data: await trend(uid, event.months) }
 
@@ -495,6 +546,26 @@ exports.main = async (event) => {
         const amountFen = toInt(event.amountFen)
         assert(Number.isFinite(amountFen) && amountFen >= 0, '预算金额不正确')
         return { ok: true, data: await setBudget(uid, event.month, amountFen) }
+      }
+
+      case 'import.parse': {
+        let text = ''
+        if (event.contentBase64) {
+          const buffer = Buffer.from(String(event.contentBase64), 'base64')
+          assert(buffer.length > 0, '这个文件是空的')
+          assert(buffer.length <= 3 * 1024 * 1024, '文件太大了，建议一次只导一个月的账单')
+          text = csv.decode(buffer)
+        } else if (event.text) {
+          text = String(event.text)
+        } else {
+          fail('没有收到文件内容')
+        }
+        const parsed = csv.parseBill(text)
+        assert(
+          parsed.rows.length > 0,
+          '没解析出记录，请确认导出的是「微信支付账单」或「支付宝交易记录」的 CSV'
+        )
+        return { ok: true, data: parsed }
       }
 
       case 'import.commit':

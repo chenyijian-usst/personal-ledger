@@ -33,7 +33,8 @@ Page({
 
   async loadCategories() {
     try {
-      const list = await api.ensureCategories(true)
+      // 用缓存，分类只在「分类管理」里会变，改完那边会清缓存
+      const list = await api.ensureCategories()
       this.setData({ categories: list })
       this.refreshShown()
     } catch (err) {

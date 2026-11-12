@@ -276,6 +276,164 @@ async function testImport() {
   })
 }
 
+/* ------------------------------ 账单 CSV ------------------------------ */
+
+const WECHAT_CSV = [
+  '微信支付账单明细,,,,,,,',
+  '微信昵称：[测试],,,,,,,',
+  '----------------------微信支付账单明细列表--------------------,,,,,,,',
+  '交易时间,交易类型,交易对方,商品,收/支,金额(元),支付方式,当前状态,交易单号,商户单号,备注',
+  '2026-11-02 12:01:00,商户消费,某某餐厅,午餐,支出,¥35.00,零钱,支付成功,1,11,',
+  '2026-11-03 09:15:00,转账,张三,转账,收入,¥200.00,零钱,已存入零钱,2,12,',
+  '2026-11-04 20:00:00,商户消费,滴滴出行,快车,支出,¥18.50,零钱,已全额退款,3,13,',
+  '2026-11-05 10:00:00,商户消费,某某超市,购物,不计收支,¥50.00,零钱,支付成功,4,14,'
+].join('\n')
+
+const ALIPAY_CSV = [
+  '支付宝交易记录明细查询,,,,,,,,,,,,,,,,',
+  '账号:[test@example.com],,,,,,,,,,,,,,,,',
+  '---------------------------------交易记录明细列表------------------------------------,,,,,,,,,,,,,,,,',
+  '交易号,商家订单号,交易创建时间,付款时间,最近修改时间,交易来源地,类型,交易对方,商品名称,金额（元）,收/支,交易状态,服务费（元）,成功退款（元）,备注,资金状态',
+  '2026110122001,order1,2026-11-01 08:00:00,2026-11-01 08:00:05,2026-11-01 08:00:05,其他,即时到账交易,肯德基,早餐,28.00,支出,交易成功,0.00,0.00,,已支出',
+  '2026110222002,order2,2026-11-02 12:00:00,2026-11-02 12:00:05,2026-11-02 12:00:05,其他,即时到账交易,某某公司,工资,15000.00,收入,交易成功,0.00,0.00,,已收入',
+  '2026110322003,order3,2026-11-03 12:00:00,,,,其他,即时到账交易,余额宝,转入,1000.00,不计收支,交易成功,0.00,0.00,,已支出'
+].join('\n')
+
+async function testCsv() {
+  console.log('\n[账单 CSV 解析]')
+  const csv = require('../cloudfunctions/api/csv')
+
+  await run('CSV 切分支持引号、字段内逗号与转义引号', async () => {
+    const rows = csv.splitCsv('a,b\n"x,1","他""说"\n')
+    assert.deepStrictEqual(rows[0], ['a', 'b'])
+    assert.deepStrictEqual(rows[1], ['x,1', '他"说'])
+  })
+
+  await run('UTF-8 的 BOM 会被去掉', async () => {
+    const buffer = Buffer.from('\uFEFF交易时间,金额', 'utf8')
+    assert.strictEqual(csv.decode(buffer).slice(0, 4), '交易时间')
+  })
+
+  await run('GBK 字节能正确解码（支付宝常见）', async () => {
+    const buffer = Buffer.from([0xd6, 0xd0, 0xce, 0xc4]) // “中文” 的 GBK 编码
+    assert.strictEqual(csv.decode(buffer), '中文')
+  })
+
+  await run('金额写法兼容 ¥ / ￥ / 千分位 / 元 / 负号', async () => {
+    assert.strictEqual(csv.parseAmountToFen('¥35.00'), 3500)
+    assert.strictEqual(csv.parseAmountToFen('￥1,234.50'), 123450)
+    assert.strictEqual(csv.parseAmountToFen('35元'), 3500)
+    assert.strictEqual(csv.parseAmountToFen('-12.00'), 1200)
+    assert.strictEqual(csv.parseAmountToFen('abc'), null)
+    assert.strictEqual(csv.parseAmountToFen('0'), null)
+  })
+
+  await run('日期能从带时间的字符串里取出', async () => {
+    assert.strictEqual(csv.parseDate('2026-11-02 12:01:00'), '2026-11-02')
+    assert.strictEqual(csv.parseDate('2026/1/2 08:00'), '2026-01-02')
+    assert.strictEqual(csv.parseDate('2026-02-30'), '')
+    assert.strictEqual(csv.parseDate('不是日期'), '')
+  })
+
+  await run('关键词猜分类：外卖归餐饮、滴滴归交通', async () => {
+    assert.strictEqual(csv.guessCategory('美团外卖', 'expense'), '餐饮')
+    assert.strictEqual(csv.guessCategory('滴滴出行 快车', 'expense'), '交通')
+    assert.strictEqual(csv.guessCategory('某某公司 工资', 'income'), '工资')
+    assert.strictEqual(csv.guessCategory('不认识的商户', 'expense'), '')
+  })
+
+  await run('微信账单：跳过退款与不计收支，备注合并交易对方', async () => {
+    const parsed = csv.parseBill(WECHAT_CSV)
+    assert.strictEqual(parsed.source, 'wechat')
+    assert.strictEqual(parsed.rows.length, 2)
+    assert.strictEqual(parsed.stats.skipped, 2)
+    assert.strictEqual(parsed.rows[0].date, '2026-11-02')
+    assert.strictEqual(parsed.rows[0].amountFen, 3500)
+    assert.strictEqual(parsed.rows[0].categoryHint, '餐饮')
+    assert.strictEqual(parsed.rows[0].remark, '某某餐厅 · 午餐')
+    assert.strictEqual(parsed.rows[1].type, 'income')
+    assert.strictEqual(parsed.rows[1].amountFen, 20000)
+  })
+
+  await run('支付宝账单：识别全角列名与「不计收支」', async () => {
+    const parsed = csv.parseBill(ALIPAY_CSV)
+    assert.strictEqual(parsed.source, 'alipay')
+    assert.strictEqual(parsed.rows.length, 2)
+    assert.strictEqual(parsed.stats.skipped, 1)
+    assert.strictEqual(parsed.rows[0].amountFen, 2800)
+    assert.strictEqual(parsed.rows[0].categoryHint, '餐饮')
+    assert.strictEqual(parsed.rows[1].type, 'income')
+    assert.strictEqual(parsed.rows[1].amountFen, 1500000)
+  })
+
+  await run('看不懂的内容会明确报错而不是静默成功', async () => {
+    const res = await api.main({ action: 'import.parse', text: 'hello world\nfoo,bar' }, {})
+    assert.strictEqual(res.ok, false)
+    assert.ok(res.msg.indexOf('没解析出记录') >= 0)
+  })
+
+  await run('导入接口端到端：解析 → 写入 → 汇总', async () => {
+    const parsed = await api.main({ action: 'import.parse', text: WECHAT_CSV }, {})
+    assert.strictEqual(parsed.ok, true)
+    const committed = await call('import.commit', { rows: parsed.data.rows })
+    assert.strictEqual(committed.added, 2)
+
+    const again = await call('import.commit', { rows: parsed.data.rows })
+    assert.strictEqual(again.added, 0, '同一份账单重复导入不应重复记账')
+
+    const detail = await call('record.month', { month: '2026-11' })
+    assert.ok(detail.totals.expense >= 3500)
+  })
+}
+
+/* ------------------------------ 概览与权限 ------------------------------ */
+
+async function testOptimizations() {
+  console.log('\n[首页概览与权限加固]')
+
+  await run('概览一次返回汇总、最近几条和预算', async () => {
+    const res = await call('record.overview', { month: '2026-11', recent: 3 })
+    assert.ok(res.totals && typeof res.totals.expense === 'number')
+    assert.ok(res.recent.length <= 3)
+    assert.ok(res.budget && res.budget.amountFen === 500000)
+    assert.ok(res.count >= 1)
+  })
+
+  await run('没有预算的月份，概览里 budget 为 null', async () => {
+    const res = await call('record.overview', { month: '2026-09', recent: 3 })
+    assert.strictEqual(res.budget, null)
+    assert.strictEqual(res.totals.expense, 0)
+  })
+
+  await run('趋势接口一次查询即可给出每月汇总', async () => {
+    const list = await call('record.trend', { months: ['2026-09', '2026-10', '2026-11'] })
+    assert.deepStrictEqual(
+      list.map((item) => item.month),
+      ['2026-09', '2026-10', '2026-11']
+    )
+  })
+
+  await run('别人的分类改不了也删不掉', async () => {
+    const created = await call('category.save', {
+      name: '临时分类',
+      icon: '📦',
+      color: '#90A4AE',
+      type: 'expense'
+    })
+    sdk.__setOpenId('intruder')
+    try {
+      await expectFail('category.save', { id: created.id, name: '黑掉你', type: 'expense' }, '分类不存在')
+      await expectFail('category.remove', { id: created.id }, '分类不存在')
+    } finally {
+      sdk.__setOpenId('test-openid')
+    }
+    const all = await call('category.list')
+    const target = all.filter((item) => item._id === created.id)[0]
+    assert.strictEqual(target.name, '临时分类', '分类不应被外人改掉')
+    await call('category.remove', { id: created.id })
+  })
+}
+
 /* ------------------------------ 入口 ------------------------------ */
 
 async function main() {
@@ -285,6 +443,8 @@ async function main() {
   await testRecords()
   await testBudget()
   await testImport()
+  await testCsv()
+  await testOptimizations()
 
   console.log('\n' + (failures.length ? '有失败用例：' : '全部通过：') + passed + ' 个用例')
   if (failures.length) {

@@ -49,11 +49,9 @@ Page({
     this.setData({ loading: true })
     try {
       const month = this.data.month
-      const [detail, budget] = await Promise.all([
-        api.call('record.month', { month: month }),
-        api.call('budget.get', { month: month })
-      ])
-      this.applyDetail(detail, budget)
+      // 一次请求拿齐：本月汇总 + 最近 8 条 + 预算，比分别拉整月明细快很多
+      const overview = await api.call('record.overview', { month: month, recent: 8 })
+      this.applyDetail(overview, overview.budget)
     } catch (err) {
       wx.showToast({ title: err.message || '加载失败', icon: 'none' })
     } finally {
@@ -63,7 +61,7 @@ Page({
 
   applyDetail(detail, budget) {
     const totals = detail.totals || { expense: 0, income: 0, balance: 0 }
-    const records = (detail.records || []).slice(0, 8)
+    const records = detail.recent || []
 
     const recent = records.map((item) => ({
       id: item._id,

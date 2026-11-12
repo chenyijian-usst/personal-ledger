@@ -1,0 +1,43 @@
+<view class="page-plain">
+  <view wx:if="{{!ready}}" class="empty">
+    <text class="empty-emoji">🔧</text>
+    <view>还没配置云开发环境</view>
+    <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
+  </view>
+
+  <block wx:else>
+    <view class="head">
+      <text class="head-title">导出成一张表</text>
+      <text class="hint">UTF-8 CSV，Excel、WPS、Numbers 都能直接打开</text>
+    </view>
+
+    <view class="month-bar">
+      <view class="month-arrow" bindtap="prevMonth">‹</view>
+      <picker mode="date" fields="month" value="{{month}}" bindchange="onMonthPick">
+        <view class="month-pick">{{monthText}} ▾</view>
+      </picker>
+      <view class="month-arrow" bindtap="nextMonth">›</view>
+    </view>
+
+    <view class="card">
+      <view class="row-between stat-row">
+        <text class="muted">记录条数</text>
+        <text class="num stat-num">{{count}}</text>
+      </view>
+      <view class="row-between stat-row">
+        <text class="muted">支出合计</text>
+        <text class="num stat-num money-expense">{{expenseText}}</text>
+      </view>
+      <view class="row-between stat-row">
+        <text class="muted">收入合计</text>
+        <text class="num stat-num money-income">{{incomeText}}</text>
+      </view>
+    </view>
+
+    <button class="btn-primary export-btn" bindtap="doExport" disabled="{{busy || !count}}">导出并发送</button>
+
+    <view class="hint note">
+      导出后会调起微信的「发送给朋友」，发给文件传输助手最方便。表里包含日期、类型、分类、金额、备注，最后几行是当月合计。
+    </view>
+  </block>
+</view>

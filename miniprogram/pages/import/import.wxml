@@ -1,0 +1,84 @@
+<view class="page-plain">
+  <view wx:if="{{!ready}}" class="empty">
+    <text class="empty-emoji">🔧</text>
+    <view>还没配置云开发环境</view>
+    <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
+  </view>
+
+  <block wx:elif="{{stage === 'idle'}}">
+    <view class="head">
+      <text class="head-title">把微信、支付宝的账单导进来</text>
+      <text class="hint">解析在云端完成，重复的账单会自动跳过，不会重复记账</text>
+    </view>
+
+    <view class="card">
+      <view class="how-title">怎么拿到 CSV</view>
+      <view class="how-item">
+        <text class="how-tag wechat">微信</text>
+        <text class="how-text">我 → 服务 → 钱包 → 账单 → 常见问题 → 下载账单 → 用于个人对账 → 选时间 → 邮箱收 CSV</text>
+      </view>
+      <view class="how-item">
+        <text class="how-tag alipay">支付宝</text>
+        <text class="how-text">我的 → 账单 → 右上角「…」→ 开具交易流水证明 → 用于个人对账 → 选时间 → 邮箱收压缩包，解压出 CSV</text>
+      </view>
+      <view class="how-tip">拿到文件后先发到微信「文件传输助手」，再回到这里选它。</view>
+    </view>
+
+    <button class="btn-primary big-btn" bindtap="chooseFile" disabled="{{busy}}">选择 CSV 文件</button>
+    <view class="or">或</view>
+    <button class="btn-ghost big-btn" bindtap="togglePaste">{{pasteMode ? '收起粘贴框' : '直接粘贴账单内容'}}</button>
+
+    <view wx:if="{{pasteMode}}" class="card paste-card">
+      <textarea
+        class="paste-area"
+        placeholder="把 CSV 内容整段粘进来，第一行表头要包含「交易时间」和「金额」"
+        placeholder-class="paste-placeholder"
+        value="{{pasteText}}"
+        maxlength="-1"
+        bindinput="onPasteInput"
+        auto-height
+      ></textarea>
+      <button class="btn-primary paste-btn" bindtap="parsePaste" disabled="{{busy}}">解析</button>
+    </view>
+  </block>
+
+  <block wx:elif="{{stage === 'parsed'}}">
+    <view class="card result-head">
+      <view class="row-between">
+        <text class="result-file">{{fileName}}</text>
+        <text class="result-source">{{sourceText}}</text>
+      </view>
+      <view class="result-stats">
+        <view class="stat">
+          <text class="stat-num num">{{totalCount}}</text>
+          <text class="stat-label">可导入</text>
+        </view>
+        <view class="stat">
+          <text class="stat-num num muted">{{skippedCount}}</text>
+          <text class="stat-label">已跳过</text>
+        </view>
+      </view>
+      <view class="hint">跳过的包括：不计收支的转账、退款关闭的交易、以及格式不完整的行</view>
+    </view>
+
+    <view class="section-title">预览（前 20 条，分类是自动猜的）</view>
+    <view class="card preview-card">
+      <view wx:for="{{preview}}" wx:key="index" class="preview-item">
+        <view class="preview-left">
+          <text class="preview-date">{{item.date}}</text>
+          <text class="preview-remark">{{item.remark}}</text>
+        </view>
+        <view class="preview-right">
+          <text class="preview-amount num {{item.isIncome ? 'money-income' : 'money-expense'}}">{{item.isIncome ? '+' : '-'}}{{item.amountText}}</text>
+          <text class="preview-hint">{{item.hint || '其他'}}</text>
+        </view>
+      </view>
+      <view wx:if="{{previewMore}}" class="preview-more">还有 {{previewMore}} 条没显示</view>
+    </view>
+
+    <view class="actions">
+      <button class="btn-ghost again" bindtap="reset" disabled="{{busy}}">重选</button>
+      <button class="btn-primary do-import" bindtap="commit" disabled="{{busy}}">导入 {{totalCount}} 条</button>
+    </view>
+  </block>
+</view>

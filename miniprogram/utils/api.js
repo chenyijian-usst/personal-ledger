@@ -7,6 +7,9 @@
 
 const config = require('../config')
 
+/** 只读接口：失败可以安全重试；写接口一律不重试，避免重复记账 */
+const READ_ACTIONS = /^(category\.list|record\.month|record\.overview|record\.trend|record\.get|budget\.get)$/
+
 /** 云函数返回的错误信息友好化 */
 function friendlyError(err) {
   const raw = (err && (err.errMsg || err.message)) || '未知错误'
@@ -19,16 +22,17 @@ function friendlyError(err) {
   if (/cloud.*init|not initialized/i.test(raw)) {
     return '云开发尚未初始化，请检查环境配置'
   }
+  if (/timeout|超时/i.test(raw)) {
+    return '请求超时了，检查下网络再试一次'
+  }
+  if (/network|网络|fail.*request/i.test(raw)) {
+    return '网络不太好，稍后再试'
+  }
   return raw
 }
 
-/**
- * 调用云函数
- * @param {string} action 动作名，如 'record.add'
- * @param {object} data 参数
- * @returns {Promise<any>} 成功时 resolve 云函数返回的 data
- */
-function call(action, data) {
+/** 真正发起一次调用 */
+function callOnce(action, data) {
   return new Promise((resolve, reject) => {
     if (!config.envId) {
       reject(new Error('还没有配置云开发环境 ID'))
@@ -52,12 +56,34 @@ function call(action, data) {
         }
         if (result.ok) {
           resolve(result.data)
-        } else {
-          reject(new Error(result.msg || '操作失败'))
+          return
         }
+        const bizError = new Error(result.msg || '操作失败')
+        bizError.isBiz = true // 业务失败，重试也没用
+        reject(bizError)
       })
-      .catch((err) => reject(new Error(friendlyError(err))))
+      .catch((err) => {
+        const wrapped = new Error(friendlyError(err))
+        wrapped.isBiz = !!err.isBiz
+        reject(wrapped)
+      })
   })
+}
+
+/**
+ * 调用云函数
+ * @param {string} action 动作名，如 'record.add'
+ * @param {object} data 参数
+ * @returns {Promise<any>} 成功时 resolve 云函数返回的 data
+ */
+function call(action, data) {
+  const retry = READ_ACTIONS.test(action) ? 1 : 0
+  const attempt = (left) =>
+    callOnce(action, data).catch((err) => {
+      if (left > 0 && !err.isBiz) return attempt(left - 1)
+      throw err
+    })
+  return attempt(retry)
 }
 
 /** 带 loading 与失败提示的调用，页面里最常用 */

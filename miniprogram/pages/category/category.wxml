@@ -1,0 +1,75 @@
+<view class="page-plain">
+  <view wx:if="{{!ready}}" class="empty">
+    <text class="empty-emoji">🔧</text>
+    <view>还没配置云开发环境</view>
+  </view>
+
+  <block wx:else>
+    <view class="type-switch">
+      <view class="type-item {{type === 'expense' ? 'active' : ''}}" data-type="expense" bindtap="switchType">支出分类</view>
+      <view class="type-item {{type === 'income' ? 'active' : ''}}" data-type="income" bindtap="switchType">收入分类</view>
+    </view>
+
+    <view class="card list-card">
+      <view wx:for="{{list}}" wx:key="id" class="cat-row" data-id="{{item.id}}" bindtap="openEdit">
+        <view class="cat-icon" style="background: {{item.color}}22">
+          <text>{{item.icon}}</text>
+        </view>
+        <text class="cat-name">{{item.name}}</text>
+        <view class="cat-del" data-id="{{item.id}}" catchtap="remove">删除</view>
+        <text class="cat-arrow">›</text>
+      </view>
+      <view wx:if="{{!list.length}}" class="empty">还没有分类</view>
+    </view>
+
+    <button class="btn-primary add-btn" bindtap="openAdd">＋ 新增分类</button>
+    <view class="hint note">点一行可以改名字、图标和颜色。删除分类不会影响已经记过的账。</view>
+  </block>
+
+  <!-- 编辑弹层 -->
+  <view wx:if="{{editor.visible}}" class="mask" bindtap="closeEditor"></view>
+  <view wx:if="{{editor.visible}}" class="editor">
+    <view class="editor-head">
+      <text class="editor-cancel" bindtap="closeEditor">取消</text>
+      <text class="editor-title">{{editor.id ? '编辑分类' : '新增分类'}}</text>
+      <text class="editor-save" bindtap="save">保存</text>
+    </view>
+
+    <view class="editor-preview">
+      <view class="preview-icon" style="background: {{editor.color}}22">{{editor.icon}}</view>
+      <input
+        class="editor-input"
+        placeholder="分类名称，比如「咖啡」"
+        placeholder-class="editor-placeholder"
+        value="{{editor.name}}"
+        maxlength="8"
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <view class="editor-label">选个图标</view>
+    <scroll-view class="emoji-grid" scroll-y>
+      <view class="emoji-wrap">
+        <view
+          wx:for="{{emojis}}"
+          wx:key="*this"
+          class="emoji {{editor.icon === item ? 'active' : ''}}"
+          data-emoji="{{item}}"
+          bindtap="pickEmoji"
+        >{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <view class="editor-label">选个颜色</view>
+    <view class="color-grid">
+      <view
+        wx:for="{{colors}}"
+        wx:key="*this"
+        class="color {{editor.color === item ? 'active' : ''}}"
+        style="background: {{item}}"
+        data-color="{{item}}"
+        bindtap="pickColor"
+      ></view>
+    </view>
+  </view>
+</view>
