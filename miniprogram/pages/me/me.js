@@ -1,4 +1,5 @@
 const dateUtil = require('../../utils/date')
+const api = require('../../utils/api')
 
 Page({
   data: {
@@ -6,7 +7,10 @@ Page({
     localMode: false,
     version: '0.1.0',
     monthText: '',
-    entries: []
+    entries: [],
+    statsTotal: 0,
+    statsRange: '',
+    statsLoading: true
   },
 
   onLoad() {
@@ -24,6 +28,27 @@ Page({
   onShow() {
     const app = getApp()
     this.setData({ ready: !!app.globalData.ready, localMode: !!app.globalData.localMode })
+    if (app.globalData.ready) this.loadStats()
+  },
+
+  /** 数据自检：让「数据到底存住没」这件事可以被看见 */
+  async loadStats() {
+    try {
+      const stats = await api.call('record.stats')
+      const range =
+        stats.firstDate && stats.lastDate
+          ? stats.firstDate === stats.lastDate
+            ? stats.firstDate
+            : stats.firstDate + ' ~ ' + stats.lastDate
+          : ''
+      this.setData({
+        statsTotal: stats.total || 0,
+        statsRange: range,
+        statsLoading: false
+      })
+    } catch (err) {
+      this.setData({ statsLoading: false })
+    }
   },
 
   onEntryTap(e) {

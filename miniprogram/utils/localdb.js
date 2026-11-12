@@ -330,6 +330,16 @@ const handlers = {
     }
   },
 
+  'record.stats': () => {
+    const db = ready()
+    const dates = db.records.map((item) => item.date).sort()
+    return {
+      total: db.records.length,
+      firstDate: dates.length ? dates[0] : '',
+      lastDate: dates.length ? dates[dates.length - 1] : ''
+    }
+  },
+
   'record.trend': (payload) => {
     const db = ready()
     const months = Array.isArray(payload.months) ? payload.months : []

@@ -682,6 +682,64 @@ async function testDemoMode() {
   app.globalData.month = '2026-11'
 }
 
+/* ------------------------------ 持久化 ------------------------------ */
+
+async function testPersistence() {
+  console.log('\n[数据持久化：重开不重置]')
+  const api = require('../miniprogram/utils/api')
+
+  await run('云开发模式：记一笔后重新打开「我的」，总数仍在', async () => {
+    const before = (await api.call('record.stats')).total
+
+    const add = loadPage('pages/add/add')
+    add.onLoad({})
+    await settle()
+    ;['9'].forEach((key) => add.onKeyTap(tap({ key: key })))
+    add.onSave()
+    await settle(20)
+
+    // 相当于关掉小程序再打开：重新实例化页面
+    app.globalData.month = '2026-11'
+    const me = loadPage('pages/me/me')
+    me.onLoad()
+    me.onShow()
+    await settle()
+
+    assert.strictEqual(me.data.statsTotal, before + 1)
+    assert.strictEqual(me.data.localMode, false)
+    assert.ok(me.data.statsRange.length > 0)
+  })
+
+  await run('演示模式：清掉 JS 模块缓存重读，数据仍在（storage 持久化）', async () => {
+    config.envId = ''
+    app.globalData.localMode = true
+    app.globalData.ready = true
+    const now = new Date()
+    const month =
+      now.getFullYear() + '-' + (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1)
+    app.globalData.month = month
+
+    const apiA = require('../miniprogram/utils/api')
+    const beforeCount = (await apiA.call('record.month', { month: month })).records.length
+    assert.ok(beforeCount > 0, '演示模式应已有样例数据')
+
+    // 模拟小程序重启：把 api / localdb 的模块缓存清掉，重新加载
+    delete require.cache[require.resolve('../miniprogram/utils/api')]
+    delete require.cache[require.resolve('../miniprogram/utils/localdb')]
+    const apiB = require('../miniprogram/utils/api')
+
+    const afterCount = (await apiB.call('record.month', { month: month })).records.length
+    assert.strictEqual(afterCount, beforeCount, '重启后记录数应保持一致')
+
+    const stats = await apiB.call('record.stats')
+    assert.strictEqual(stats.total, beforeCount, '自检面板的总数也应一致')
+  })
+
+  config.envId = 'test-env'
+  app.globalData.localMode = false
+  app.globalData.month = '2026-11'
+}
+
 async function main() {
   console.log('页面运行时测试（wx / Page / getApp 替身 + 云函数内存数据库）')
   try {
@@ -701,6 +759,7 @@ async function main() {
   await testExport()
   await testSetupAndMe()
   await testDemoMode()
+  await testPersistence()
 
   console.log('\n' + (failures.length ? '有失败用例：' : '全部通过：') + passed + ' 个用例')
   if (failures.length) {

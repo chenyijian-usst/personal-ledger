@@ -413,6 +413,13 @@ async function testOptimizations() {
     )
   })
 
+  await run('数据自检：返回总数与日期跨度', async () => {
+    const stats = await call('record.stats')
+    assert.ok(stats.total > 0, '应统计到记录')
+    assert.match(stats.firstDate, /^\d{4}-\d{2}-\d{2}$/)
+    assert.ok(stats.firstDate <= stats.lastDate, '最早日期不应晚于最晚日期')
+  })
+
   await run('别人的分类改不了也删不掉', async () => {
     const created = await call('category.save', {
       name: '临时分类',

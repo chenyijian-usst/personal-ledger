@@ -127,6 +127,11 @@ class Query {
     return { data: clone(rows) }
   }
 
+  async count() {
+    const list = ensure(this.name).filter((doc) => matchDoc(doc, this.options.where))
+    return { total: list.length }
+  }
+
   async add(payload) {
     const items = Array.isArray(payload.data) ? payload.data : [payload.data]
     const ids = []

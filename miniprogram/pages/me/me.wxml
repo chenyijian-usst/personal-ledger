@@ -7,6 +7,24 @@
     </view>
   </view>
 
+  <!-- 数据自检：数据到底存住没，一眼能看见 -->
+  <view class="card data-card">
+    <view class="row-between">
+      <view class="col data-main">
+        <view class="data-mode">
+          <view class="mode-dot {{localMode ? 'local' : 'cloud'}}"></view>
+          <text>{{localMode ? '本机演示模式' : '云开发 · 已连接'}}</text>
+        </view>
+        <text class="hint data-desc">{{localMode ? '数据存在这台设备，清缓存或换手机会丢' : '数据存在你的云数据库，清缓存、换手机都不影响'}}</text>
+      </view>
+      <view class="data-count">
+        <text class="data-num num">{{statsLoading ? '—' : statsTotal}}</text>
+        <text class="data-unit">条</text>
+      </view>
+    </view>
+    <view wx:if="{{statsRange}}" class="data-range">记录跨度 {{statsRange}}</view>
+  </view>
+
   <view class="card menu">
     <view
       wx:for="{{entries}}"

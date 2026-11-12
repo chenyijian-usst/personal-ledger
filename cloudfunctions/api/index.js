@@ -352,6 +352,32 @@ async function overview(uid, month, recentCount) {
   }
 }
 
+/** 数据自检：总共多少条、最早和最晚一条的日期 */
+async function recordStats(uid) {
+  const totalRes = await db.collection(COL_RECORDS).where({ uid: uid }).count()
+  const total = totalRes.total || 0
+  if (!total) return { total: 0, firstDate: '', lastDate: '' }
+
+  const first = await db
+    .collection(COL_RECORDS)
+    .where({ uid: uid })
+    .orderBy('date', 'asc')
+    .limit(1)
+    .get()
+  const last = await db
+    .collection(COL_RECORDS)
+    .where({ uid: uid })
+    .orderBy('date', 'desc')
+    .limit(1)
+    .get()
+
+  return {
+    total: total,
+    firstDate: first.data[0] ? first.data[0].date : '',
+    lastDate: last.data[0] ? last.data[0].date : ''
+  }
+}
+
 /* ------------------------------ 导入 ------------------------------ */
 
 function hashOf(row) {
@@ -535,6 +561,9 @@ exports.main = async (event) => {
 
       case 'record.trend':
         return { ok: true, data: await trend(uid, event.months) }
+
+      case 'record.stats':
+        return { ok: true, data: await recordStats(uid) }
 
       case 'budget.get': {
         assert(validMonth(event.month), '月份不正确')
