@@ -90,6 +90,28 @@ function checkWxml(file) {
 
 walk(mp, (n) => n.endsWith('.wxml')).forEach(checkWxml)
 
+/* 4.5 wx:for 必须带有效的 wx:key（index 不是有效值，会被当成 item.index） */
+function checkWxForKey(file) {
+  const source = fs.readFileSync(file, 'utf8').replace(/<!--[\s\S]*?-->/g, '')
+  const tagRe = /<([a-zA-Z][\w-]*)((?:"[^"]*"|'[^']*'|[^>"'])*?)>/g
+  let match
+  while ((match = tagRe.exec(source))) {
+    const attrs = match[2] || ''
+    if (!/\bwx:for\s*=/.test(attrs)) continue
+    const key = attrs.match(/wx:key\s*=\s*"([^"]*)"/)
+    const where = path.relative(root, file)
+    if (!key) {
+      problems.push(`${where}: <${match[1]}> 用了 wx:for 却没写 wx:key`)
+      continue
+    }
+    if (key[1].trim() === 'index') {
+      problems.push(`${where}: wx:key="index" 无效（会被当成 item.index），请改成唯一字段或 *this`)
+    }
+  }
+}
+
+walk(mp, (n) => n.endsWith('.wxml')).forEach(checkWxForKey)
+
 /* 5. 事件处理函数是否存在 */
 const handlerAttrs = [
   'bindtap',

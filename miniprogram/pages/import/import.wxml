@@ -63,7 +63,7 @@
 
     <view class="section-title">预览（前 20 条，分类是自动猜的）</view>
     <view class="card preview-card">
-      <view wx:for="{{preview}}" wx:key="index" class="preview-item">
+      <view wx:for="{{preview}}" wx:key="idx" class="preview-item">
         <view class="preview-left">
           <text class="preview-date">{{item.date}}</text>
           <text class="preview-remark">{{item.remark}}</text>

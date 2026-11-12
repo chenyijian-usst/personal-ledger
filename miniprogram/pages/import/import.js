@@ -91,7 +91,8 @@ Page({
     try {
       const result = await api.callWithToast('import.parse', payload, '解析中')
       const rows = result.rows || []
-      const preview = rows.slice(0, 20).map((row) => ({
+      const preview = rows.slice(0, 20).map((row, index) => ({
+        idx: index,
         date: row.date,
         typeText: row.type === 'income' ? '收入' : '支出',
         isIncome: row.type === 'income',
