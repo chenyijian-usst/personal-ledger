@@ -88,6 +88,8 @@ tools/
 
 ## 跑起来（约 5 分钟）
 
+> 云开发怎么开通、环境 ID 在哪、常见报错怎么查：见 **[docs/cloudbase-setup.md](docs/cloudbase-setup.md)**。
+
 1. **注册小程序**：<https://mp.weixin.qq.com> → 立即注册 → 小程序 → 主体选「个人」。在「开发管理 → 开发设置」复制 AppID。
    - 一定要真 AppID，**测试号不支持云开发**。
 2. **改 appid**：把 `project.config.json` 里的 `"appid": "touristappid"` 换成你的 AppID（或在开发者工具「详情 → 基本信息」里改）。
