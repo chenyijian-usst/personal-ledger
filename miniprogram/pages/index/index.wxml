@@ -14,6 +14,13 @@
       <text class="demo-text">数据只存在这台设备上，点这里换成云开发</text>
     </view>
 
+    <!-- 连不上云开发时的提示（最常见原因：云函数没部署） -->
+    <view wx:if="{{errorMsg}}" class="error-card" bindtap="goSetup">
+      <text class="error-title">连不上云开发</text>
+      <text class="error-msg">{{errorMsg}}</text>
+      <text class="error-action">点这里看怎么修 ›</text>
+    </view>
+
     <!-- 本月概览 -->
     <view class="hero">
       <view class="hero-head">

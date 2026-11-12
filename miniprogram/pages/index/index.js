@@ -6,6 +6,7 @@ Page({
   data: {
     ready: false,
     localMode: false,
+    errorMsg: '',
     loading: true,
     month: '',
     monthText: '',
@@ -56,8 +57,11 @@ Page({
       const month = this.data.month
       // 一次请求拿齐：本月汇总 + 最近 8 条 + 预算，比分别拉整月明细快很多
       const overview = await api.call('record.overview', { month: month, recent: 8 })
+      this.setData({ errorMsg: '' })
       this.applyDetail(overview, overview.budget)
     } catch (err) {
+      // 典型情况：envId 填了但云函数还没部署，把原因直接显示在首页上
+      this.setData({ errorMsg: err.message || '加载失败' })
       wx.showToast({ title: err.message || '加载失败', icon: 'none' })
     } finally {
       this.setData({ loading: false })
