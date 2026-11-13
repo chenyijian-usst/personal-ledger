@@ -14,6 +14,8 @@ Page({
     income: '0.00',
     balance: '0.00',
     balanceNegative: false,
+    count: 0,
+    ticks: [25, 50, 75],
     hasBudget: false,
     budgetAmount: '0.00',
     budgetUsed: '0.00',
@@ -75,6 +77,7 @@ Page({
     const recent = records.map((item) => ({
       id: item._id,
       icon: item.categoryIcon || '📦',
+      color: item.categoryColor || '#A2957F',
       name: item.categoryName || '未分类',
       remark: item.remark || '',
       dateText: dateUtil.dayLabel(item.date),
@@ -87,6 +90,7 @@ Page({
       income: money.fenToFixed(totals.income),
       balance: money.fenToFixed(totals.balance),
       balanceNegative: totals.balance < 0,
+      count: detail.count || records.length,
       recent: recent,
       hasBudget: false
     }

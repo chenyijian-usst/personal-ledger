@@ -9,90 +9,95 @@
 
   <block wx:else>
     <!-- 演示模式提示 -->
-    <view wx:if="{{localMode}}" class="demo-banner" bindtap="goSetup">
-      <text class="demo-tag">演示模式</text>
-      <text class="demo-text">数据只存在这台设备上，点这里换成云开发</text>
+    <view wx:if="{{localMode}}" class="notice-bar" bindtap="goSetup">
+      <text class="notice-tag">演示</text>
+      <text class="notice-text">数据只存在这台设备上，点这里换成云开发</text>
     </view>
 
-    <!-- 连不上云开发时的提示（最常见原因：云函数没部署） -->
+    <!-- 连不上云开发时的提示 -->
     <view wx:if="{{errorMsg}}" class="error-card" bindtap="goSetup">
       <text class="error-title">连不上云开发</text>
       <text class="error-msg">{{errorMsg}}</text>
       <text class="error-action">点这里看怎么修 ›</text>
     </view>
 
-    <!-- 本月概览 -->
-    <view class="hero">
-      <view class="hero-head">
-        <text class="hero-month">{{monthText}}</text>
-        <text class="hero-label">结余</text>
+    <!-- 账页头部 -->
+    <view class="ledger">
+      <view class="ledger-top">
+        <text class="ledger-month">{{monthText}}</text>
+        <text class="ledger-count">{{count}} 笔</text>
       </view>
-      <view class="hero-amount num {{balanceNegative ? 'money-expense' : ''}}">{{balance}}</view>
-      <view class="hero-row">
-        <view class="hero-item">
-          <text class="hero-item-label">支出</text>
-          <text class="hero-item-value num">{{expense}}</text>
+
+      <text class="ledger-label">结余</text>
+      <view class="ledger-balance num {{balanceNegative ? 'neg' : ''}}">{{balance}}</view>
+
+      <view class="ledger-rule"></view>
+
+      <view class="ledger-cells">
+        <view class="ledger-cell">
+          <text class="cell-k">支出</text>
+          <text class="cell-v num">{{expense}}</text>
         </view>
-        <view class="hero-divider"></view>
-        <view class="hero-item">
-          <text class="hero-item-label">收入</text>
-          <text class="hero-item-value num">{{income}}</text>
+        <view class="ledger-cell">
+          <text class="cell-k">收入</text>
+          <text class="cell-v num">{{income}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 预算进度 -->
-    <view wx:if="{{hasBudget}}" class="card budget-card" bindtap="goBudget">
+    <!-- 预算 -->
+    <view wx:if="{{hasBudget}}" class="budget" bindtap="goBudget">
       <view class="row-between">
-        <text class="budget-title">本月预算</text>
-        <text class="budget-left {{budgetOver ? 'over' : ''}}">{{budgetLeftText}}</text>
+        <text class="budget-k">本月预算</text>
+        <text class="budget-v num {{budgetOver ? 'over' : ''}}">{{budgetLeftText}}</text>
       </view>
-      <view class="progress">
-        <view class="progress-inner {{budgetOver ? 'over' : ''}}" style="width: {{budgetPercent}}%"></view>
+      <view class="budget-track">
+        <view class="budget-fill {{budgetOver ? 'over' : ''}}" style="width: {{budgetPercent}}%"></view>
+        <view class="budget-tick" wx:for="{{ticks}}" wx:key="*this" style="left: {{item}}%"></view>
       </view>
       <view class="row-between budget-foot">
-        <text class="hint">已用 {{budgetUsed}}</text>
-        <text class="hint">预算 {{budgetAmount}}</text>
+        <text class="tiny">已用 {{budgetUsed}}</text>
+        <text class="tiny">额度 {{budgetAmount}}</text>
       </view>
     </view>
 
-    <view wx:else class="card budget-empty" bindtap="goBudget">
-      <text class="budget-empty-emoji">🎯</text>
-      <view class="col">
-        <text class="budget-empty-title">还没设置本月预算</text>
-        <text class="hint">设一个额度，超支时提醒你</text>
+    <view wx:else class="budget-empty" bindtap="goBudget">
+      <text class="budget-empty-icon">◎</text>
+      <view class="col budget-empty-main">
+        <text class="budget-empty-t">还没设本月预算</text>
+        <text class="tiny">设个额度，超支时会提醒你</text>
       </view>
       <text class="budget-empty-arrow">›</text>
     </view>
 
     <!-- 最近记录 -->
-    <view class="row-between section-head">
-      <text class="section-title">最近记录</text>
-      <text class="section-more" bindtap="goList">全部 ›</text>
+    <view class="row-between sec-head">
+      <text class="section-title">最近</text>
+      <text class="sec-more" bindtap="goList">全部 ›</text>
     </view>
 
-    <view wx:if="{{recent.length}}" class="card list-card">
+    <view wx:if="{{recent.length}}" class="entry-list">
       <view
         wx:for="{{recent}}"
         wx:key="id"
-        class="record"
+        class="entry"
         data-id="{{item.id}}"
         bindtap="onRecordTap"
       >
-        <view class="record-icon">{{item.icon}}</view>
-        <view class="record-main">
-          <view class="record-name">{{item.name}}</view>
-          <view wx:if="{{item.remark}}" class="record-remark">{{item.remark}}</view>
+        <view class="entry-stamp" style="color: {{item.color}}">{{item.icon}}</view>
+        <view class="entry-main">
+          <view class="entry-name">{{item.name}}</view>
+          <view wx:if="{{item.remark}}" class="entry-remark">{{item.remark}}</view>
         </view>
-        <view class="record-right">
-          <text class="record-amount num {{item.isIncome ? 'money-income' : 'money-expense'}}">{{item.amountText}}</text>
-          <text class="record-date">{{item.dateText}}</text>
+        <view class="entry-right">
+          <text class="entry-amount num {{item.isIncome ? 'inc' : 'exp'}}">{{item.amountText}}</text>
+          <text class="entry-date">{{item.dateText}}</text>
         </view>
       </view>
     </view>
 
     <view wx:else class="empty">
-      <text class="empty-emoji">🧾</text>
+      <text class="empty-emoji">▤</text>
       <view>本月还没有记账</view>
       <view class="hint">点右下角「记一笔」开始</view>
     </view>

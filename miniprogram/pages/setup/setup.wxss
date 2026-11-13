@@ -36,20 +36,20 @@
 
 .demo-card {
   margin-bottom: 24rpx;
-  background: #fff7e6;
-  border: 1rpx solid #ffe0a3;
+  background: #fdf6e3;
+  border: 1rpx solid #eadfc2;
 }
 
 .demo-title {
   font-size: 30rpx;
   font-weight: 600;
-  color: #8a6d3b;
+  color: #8a6a1f;
   margin-bottom: 10rpx;
 }
 
 .demo-desc {
   font-size: 25rpx;
-  color: #8a6d3b;
+  color: #8a6a1f;
   line-height: 1.7;
 }
 
@@ -57,7 +57,7 @@
   margin-top: 24rpx;
   width: 260rpx;
   background: #ffe7ba;
-  color: #8a6d3b;
+  color: #8a6a1f;
 }
 
 .step {
@@ -96,21 +96,23 @@
 
 .step-code {
   margin-top: 14rpx;
-  background: #f6f8fb;
-  border-radius: 12rpx;
+  background: var(--paper);
+  border: 1rpx solid var(--line);
+  border-radius: 8rpx;
   padding: 16rpx 20rpx;
   font-size: 23rpx;
-  color: #4a5568;
+  color: var(--ink-2);
   font-family: 'SFMono-Regular', Consolas, monospace;
   word-break: break-all;
 }
 
 .notice {
-  background: #fff8e6;
-  border-radius: 16rpx;
+  background: #fdf6e3;
+  border: 1rpx solid #eadfc2;
+  border-radius: 10rpx;
   padding: 22rpx 24rpx;
-  font-size: 24rpx;
-  color: #8a6d3b;
+  font-size: 23rpx;
+  color: #8a6a1f;
   line-height: 1.7;
   margin-top: 8rpx;
 }

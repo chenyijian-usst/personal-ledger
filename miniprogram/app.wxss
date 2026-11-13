@@ -1,23 +1,51 @@
-/* 全局样式：一套克制的中性色 + 一个主色，够用就好 */
-page {
-  --bg: #f5f6f8;
-  --card: #ffffff;
-  --text: #1f2329;
-  --text-2: #646a73;
-  --text-3: #a3a8b3;
-  --line: #eef0f3;
-  --primary: #3a6ff7;
-  --primary-soft: #eaf0ff;
-  --expense: #f2544b;
-  --income: #1fa971;
-  --warn: #f59e0b;
+/* ==========================================================================
+   设计语言：纸质账簿
+   - 暖纸底 + 极细横线，像账本纸
+   - 墨色做主调（按钮、导航），朱红只给支出，墨绿只给收入，颜色都有语义
+   - 数字用衬线体 + 等宽数字，读金额更稳
+   - 卡片靠细边线和极小投影，不靠大圆角和渐变
+   ========================================================================== */
 
-  background: var(--bg);
-  color: var(--text);
+page {
+  /* 色板 */
+  --paper: #f5f1e8;
+  --paper-deep: #efe9dc;
+  --card: #fffdf8;
+  --ink: #23201b;
+  --ink-2: #6e6455;
+  --ink-3: #a2957f;
+  --line: #e6dece;
+  --line-strong: #d8cdb8;
+
+  --primary: #2b3a44;
+  --primary-soft: #e7ecec;
+  --expense: #b03a2e;
+  --income: #2f6b4e;
+  --warn: #a8761f;
+
+  /* 兼容旧变量名，避免各页面引用失效 */
+  --bg: var(--paper);
+  --text: var(--ink);
+  --text-2: var(--ink-2);
+  --text-3: var(--ink-3);
+
+  --serif: Georgia, 'Times New Roman', 'Songti SC', 'STSong', serif;
+  --radius: 16rpx;
+
+  background-color: var(--paper);
+  /* 纸张横线：很淡，只提供质感，不干扰阅读 */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 63rpx,
+    rgba(35, 32, 27, 0.035) 63rpx,
+    rgba(35, 32, 27, 0.035) 64rpx
+  );
+  background-attachment: fixed;
+  color: var(--ink);
   font-size: 28rpx;
-  line-height: 1.5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
-    'Microsoft YaHei', sans-serif;
+  line-height: 1.55;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -29,7 +57,7 @@ scroll-view {
   box-sizing: border-box;
 }
 
-/* 页面容器：底部给 tabBar 和悬浮按钮留出空间 */
+/* 页面容器 */
 .page {
   min-height: 100vh;
   padding: 24rpx 24rpx calc(180rpx + env(safe-area-inset-bottom));
@@ -40,15 +68,17 @@ scroll-view {
   padding: 24rpx 24rpx calc(40rpx + env(safe-area-inset-bottom));
 }
 
+/* 卡片：纸片感，细边线 + 极浅投影 */
 .card {
   background: var(--card);
-  border-radius: 24rpx;
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
   padding: 28rpx;
-  box-shadow: 0 2rpx 12rpx rgba(31, 35, 41, 0.04);
+  box-shadow: 0 2rpx 0 rgba(35, 32, 27, 0.03);
 }
 
 .card + .card {
-  margin-top: 24rpx;
+  margin-top: 20rpx;
 }
 
 .row {
@@ -68,18 +98,20 @@ scroll-view {
 }
 
 .muted {
-  color: var(--text-2);
+  color: var(--ink-2);
 }
 
 .hint {
-  color: var(--text-3);
+  color: var(--ink-3);
   font-size: 24rpx;
 }
 
+/* 章节标题：小字 + 字距，像账簿的分栏名 */
 .section-title {
-  font-size: 26rpx;
-  color: var(--text-2);
-  margin: 32rpx 8rpx 16rpx;
+  font-size: 22rpx;
+  color: var(--ink-3);
+  letter-spacing: 3rpx;
+  margin: 36rpx 4rpx 14rpx;
   font-weight: 500;
 }
 
@@ -91,20 +123,24 @@ scroll-view {
   color: var(--income);
 }
 
+/* 金额一律等宽衬线数字 */
 .num {
+  font-family: var(--serif);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
+  letter-spacing: 0.3rpx;
 }
 
-/* 主按钮 */
+/* 按钮：墨色实心，圆角收小，像盖章 */
 .btn-primary {
   background: var(--primary);
-  color: #fff;
-  border-radius: 999rpx;
+  color: #fdfbf6;
+  border-radius: 10rpx;
   height: 92rpx;
   line-height: 92rpx;
-  font-size: 32rpx;
-  font-weight: 600;
+  font-size: 30rpx;
+  font-weight: 500;
+  letter-spacing: 1rpx;
   text-align: center;
   border: none;
 }
@@ -114,14 +150,14 @@ scroll-view {
 }
 
 .btn-ghost {
-  background: var(--primary-soft);
+  background: transparent;
   color: var(--primary);
-  border-radius: 999rpx;
+  border: 1rpx solid var(--line-strong);
+  border-radius: 10rpx;
   height: 80rpx;
   line-height: 80rpx;
   font-size: 28rpx;
   text-align: center;
-  border: none;
 }
 
 .btn-ghost::after {
@@ -133,6 +169,7 @@ button {
   margin: 0;
   background: none;
   line-height: inherit;
+  font-family: inherit;
 }
 
 button::after {
@@ -141,18 +178,24 @@ button::after {
 
 /* 空状态 */
 .empty {
-  padding: 120rpx 40rpx;
+  padding: 110rpx 40rpx;
   text-align: center;
-  color: var(--text-3);
+  color: var(--ink-3);
 }
 
 .empty-emoji {
-  font-size: 72rpx;
+  font-size: 64rpx;
   display: block;
   margin-bottom: 20rpx;
+  opacity: 0.85;
 }
 
-/* 底部安全区占位 */
 .safe-bottom {
   height: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+/* 细分隔线，账页常用元素 */
+.rule {
+  height: 1rpx;
+  background: var(--line);
 }

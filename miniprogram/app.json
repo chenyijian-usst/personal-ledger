@@ -12,16 +12,16 @@
     "pages/setup/setup"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#f5f1e8",
     "navigationBarTitleText": "记账",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f6f8"
+    "backgroundColor": "#f5f1e8"
   },
   "tabBar": {
-    "color": "#8a8f99",
-    "selectedColor": "#3a6ff7",
-    "backgroundColor": "#ffffff",
+    "color": "#a2957f",
+    "selectedColor": "#2b3a44",
+    "backgroundColor": "#fffdf8",
     "borderStyle": "white",
     "list": [
       {

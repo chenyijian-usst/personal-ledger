@@ -2,44 +2,53 @@
   padding-bottom: calc(300rpx + env(safe-area-inset-bottom));
 }
 
-/* 类型切换 */
+/* 收支切换：下划线标签，和统计页一致 */
 .type-switch {
   display: flex;
-  background: #eceff4;
-  border-radius: 999rpx;
-  padding: 6rpx;
-  margin-bottom: 24rpx;
+  border-bottom: 1rpx solid var(--line);
+  margin-bottom: 20rpx;
 }
 
 .type-item {
   flex: 1;
   text-align: center;
-  height: 68rpx;
-  line-height: 68rpx;
-  font-size: 28rpx;
-  color: var(--text-2);
-  border-radius: 999rpx;
-  transition: all 0.2s;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 27rpx;
+  letter-spacing: 3rpx;
+  color: var(--ink-3);
+  position: relative;
 }
 
 .type-item.active {
-  background: #fff;
   font-weight: 600;
 }
 
 .type-item.active.expense {
   color: var(--expense);
-  box-shadow: 0 2rpx 8rpx rgba(242, 84, 75, 0.15);
 }
 
 .type-item.active.income {
   color: var(--income);
-  box-shadow: 0 2rpx 8rpx rgba(31, 169, 113, 0.15);
 }
 
-/* 分类九宫格 */
+.type-item.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -1rpx;
+  width: 56rpx;
+  height: 3rpx;
+  background: currentColor;
+}
+
+/* 分类：方形图章 */
 .cat-card {
-  padding: 24rpx 12rpx 12rpx;
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: 20rpx 10rpx 8rpx;
 }
 
 .cat-grid {
@@ -52,54 +61,57 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12rpx 0 20rpx;
+  padding: 10rpx 0 18rpx;
 }
 
 .cat-icon {
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 50%;
+  width: 82rpx;
+  height: 82rpx;
+  border-radius: 10rpx;
+  border: 1rpx solid var(--line);
+  background: var(--paper);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40rpx;
-  border: 3rpx solid transparent;
+  font-size: 36rpx;
   transition: all 0.15s;
 }
 
 .cat-item.active .cat-icon {
-  border-color: var(--primary);
-  transform: scale(1.04);
+  border-color: var(--ink);
+  background: var(--card);
+  box-shadow: 0 2rpx 0 var(--line-strong);
+  transform: translateY(-2rpx);
 }
 
 .cat-name {
-  font-size: 22rpx;
-  color: var(--text-2);
+  font-size: 21rpx;
+  color: var(--ink-3);
   margin-top: 8rpx;
 }
 
 .cat-item.active .cat-name {
-  color: var(--primary);
+  color: var(--ink);
   font-weight: 500;
 }
 
 .cat-loading {
   text-align: center;
-  color: var(--text-3);
+  color: var(--ink-3);
   padding: 40rpx;
 }
 
 /* 表单 */
 .form-card {
-  padding: 8rpx 28rpx;
-  margin-top: 24rpx;
+  padding: 0 26rpx;
+  margin-top: 20rpx;
 }
 
 .form-row {
   display: flex;
   align-items: center;
-  min-height: 96rpx;
-  border-bottom: 1rpx solid var(--line);
+  min-height: 92rpx;
+  border-bottom: 1rpx dashed var(--line);
 }
 
 .form-row:last-child {
@@ -107,19 +119,20 @@
 }
 
 .form-label {
-  width: 100rpx;
-  font-size: 28rpx;
-  color: var(--text-2);
+  width: 96rpx;
+  font-size: 26rpx;
+  color: var(--ink-3);
   flex-shrink: 0;
+  letter-spacing: 1rpx;
 }
 
 .form-input {
   flex: 1;
-  font-size: 28rpx;
+  font-size: 27rpx;
 }
 
 .form-placeholder {
-  color: var(--text-3);
+  color: var(--ink-3);
 }
 
 .form-value {
@@ -127,11 +140,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 28rpx;
+  font-size: 27rpx;
 }
 
 .form-arrow {
-  color: var(--text-3);
+  color: var(--ink-3);
 }
 
 /* 底部金额与按钮 */
@@ -140,9 +153,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #fff;
-  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -4rpx 20rpx rgba(31, 35, 41, 0.06);
+  background: var(--card);
+  border-top: 1rpx solid var(--line);
+  padding: 18rpx 24rpx calc(18rpx + env(safe-area-inset-bottom));
   z-index: 30;
 }
 
@@ -150,12 +163,13 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 8rpx 8rpx 16rpx;
+  padding: 4rpx 6rpx 14rpx;
 }
 
 .amount-label {
-  font-size: 26rpx;
-  color: var(--text-2);
+  font-size: 22rpx;
+  letter-spacing: 3rpx;
+  color: var(--ink-3);
 }
 
 .amount-value {
@@ -164,19 +178,21 @@
 }
 
 .amount-currency {
-  font-size: 32rpx;
-  color: var(--text-2);
+  font-size: 28rpx;
+  color: var(--ink-3);
   margin-right: 6rpx;
 }
 
 .amount-num {
-  font-size: 56rpx;
+  font-size: 58rpx;
   font-weight: 600;
   line-height: 1;
+  letter-spacing: -1rpx;
 }
 
 .amount-num.placeholder {
-  color: var(--text-3);
+  color: var(--ink-3);
+  font-weight: 400;
 }
 
 .bottom-actions {
@@ -184,11 +200,11 @@
 }
 
 .again-btn {
-  width: 220rpx;
+  width: 210rpx;
   flex-shrink: 0;
   height: 92rpx;
   line-height: 92rpx;
-  margin-right: 20rpx;
+  margin-right: 16rpx;
 }
 
 .save-btn {
@@ -197,7 +213,7 @@
 
 .btn-primary[disabled],
 .btn-ghost[disabled] {
-  opacity: 0.45;
+  opacity: 0.4;
 }
 
 /* 键盘 */
@@ -207,7 +223,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(35, 32, 27, 0.3);
   z-index: 40;
 }
 
@@ -216,62 +232,66 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f7f8fa;
-  border-radius: 24rpx 24rpx 0 0;
+  background: var(--paper);
+  border-top: 1rpx solid var(--line-strong);
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 50;
-  box-shadow: 0 -8rpx 30rpx rgba(0, 0, 0, 0.12);
 }
 
 .keypad-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24rpx 32rpx;
-  background: #fff;
-  border-radius: 24rpx 24rpx 0 0;
+  padding: 22rpx 30rpx;
+  background: var(--card);
+  border-bottom: 1rpx solid var(--line);
 }
 
 .keypad-amount {
-  font-size: 40rpx;
+  font-family: var(--serif);
+  font-variant-numeric: tabular-nums;
+  font-size: 42rpx;
   font-weight: 600;
 }
 
 .keypad-done {
-  color: var(--primary);
-  font-size: 28rpx;
-  font-weight: 500;
-  padding: 8rpx 16rpx;
+  color: var(--ink);
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+  padding: 8rpx 14rpx;
+  border-bottom: 2rpx solid var(--ink);
 }
 
 .keypad-grid {
   display: flex;
   flex-wrap: wrap;
-  padding: 12rpx;
+  padding: 14rpx;
 }
 
 .key {
   width: calc(25% - 12rpx);
   margin: 6rpx;
   height: 104rpx;
-  background: #fff;
-  border-radius: 16rpx;
+  background: var(--card);
+  border: 1rpx solid var(--line);
+  border-radius: 10rpx;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--serif);
   font-size: 40rpx;
-  font-weight: 500;
-  color: var(--text);
+  color: var(--ink);
 }
 
 .key:active {
-  background: #e9edf5;
+  background: var(--paper-deep);
 }
 
 .key.fn {
-  background: #eef1f6;
-  color: var(--text-2);
-  font-size: 32rpx;
+  background: var(--paper-deep);
+  color: var(--ink-2);
+  font-size: 30rpx;
+  font-family: inherit;
 }
 
 .key.zero {
@@ -281,7 +301,9 @@
 .key.ok {
   width: calc(50% - 12rpx);
   background: var(--primary);
-  color: #fff;
-  font-size: 30rpx;
-  font-weight: 600;
+  border-color: var(--primary);
+  color: #fdfbf6;
+  font-family: inherit;
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
 }

@@ -68,7 +68,7 @@
   width: 112rpx;
   height: 112rpx;
   border-radius: 32rpx;
-  background: #fff;
+  background: var(--card);
   display: flex;
   align-items: center;
   justify-content: center;

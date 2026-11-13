@@ -70,21 +70,21 @@
 }
 
 .progress {
-  height: 16rpx;
-  background: #eef1f6;
-  border-radius: 999rpx;
+  height: 10rpx;
+  background: var(--paper-deep);
+  border-radius: 2rpx;
   margin: 20rpx 0 12rpx;
   overflow: hidden;
 }
 
 .progress-inner {
   height: 100%;
-  border-radius: 999rpx;
-  background: linear-gradient(90deg, #5b8cff, #3a6ff7);
+  border-radius: 2rpx;
+  background: var(--primary);
 }
 
 .progress-inner.over {
-  background: linear-gradient(90deg, #ff8a80, #f2544b);
+  background: var(--expense);
 }
 
 .foot {
