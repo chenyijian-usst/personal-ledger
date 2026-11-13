@@ -115,7 +115,7 @@
   border-bottom: none;
 }
 
-/* 方形图章式分类图标 */
+/* 方形图章：单字 + 宋体 */
 .record-icon {
   width: 62rpx;
   height: 62rpx;
@@ -125,7 +125,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-song);
   font-size: 30rpx;
+  color: var(--ink);
   margin-right: 20rpx;
   flex-shrink: 0;
 }

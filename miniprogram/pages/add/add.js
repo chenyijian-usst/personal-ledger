@@ -44,7 +44,11 @@ Page({
 
   refreshShown(keepActive) {
     const type = this.data.type
-    const shown = this.data.categories.filter((item) => item.type === type)
+    const shown = this.data.categories
+      .filter((item) => item.type === type)
+      .map((item) =>
+        Object.assign({}, item, { seal: (item.name || '未').slice(0, 1) })
+      )
     const keep = keepActive && shown.some((item) => item._id === this.data.activeCategoryId)
     this.setData({
       shown: shown,

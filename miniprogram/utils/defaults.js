@@ -27,7 +27,7 @@ const INCOME = [
   { name: '兼职', icon: '💼', color: '#5C6BC0' },
   { name: '理财', icon: '📈', color: '#26A69A' },
   { name: '红包', icon: '🧧', color: '#EF5350' },
-  { name: '报销', icon: '🧾', color: '#8D6E63' },
+  { name: '报销', icon: '报', color: '#8D6E63' },
   { name: '其他', icon: '💵', color: '#78909C' }
 ]
 

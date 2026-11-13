@@ -1,6 +1,6 @@
 <view class="page-plain">
   <view wx:if="{{!ready}}" class="empty">
-    <text class="empty-emoji">🔧</text>
+    <text class="empty-emoji">▤</text>
     <view>还没配置云开发环境</view>
   </view>
 
@@ -12,9 +12,7 @@
 
     <view class="card list-card">
       <view wx:for="{{list}}" wx:key="id" class="cat-row" data-id="{{item.id}}" bindtap="openEdit">
-        <view class="cat-icon" style="background: {{item.color}}22">
-          <text>{{item.icon}}</text>
-        </view>
+        <view class="cat-icon" style="border-color: {{item.color}}">{{item.seal}}</view>
         <text class="cat-name">{{item.name}}</text>
         <view class="cat-del" data-id="{{item.id}}" catchtap="remove">删除</view>
         <text class="cat-arrow">›</text>
@@ -23,7 +21,7 @@
     </view>
 
     <button class="btn-primary add-btn" bindtap="openAdd">＋ 新增分类</button>
-    <view class="hint note">点一行可以改名字、图标和颜色。删除分类不会影响已经记过的账。</view>
+    <view class="hint note">分类只用一个字的图章表示，颜色可选。删除分类不会影响已经记过的账。</view>
   </block>
 
   <!-- 编辑弹层 -->
@@ -36,31 +34,19 @@
     </view>
 
     <view class="editor-preview">
-      <view class="preview-icon" style="background: {{editor.color}}22">{{editor.icon}}</view>
+      <view class="preview-icon" style="border-color: {{editor.color}}; color: {{editor.color}}">{{editor.seal}}</view>
       <input
         class="editor-input"
         placeholder="分类名称，比如「咖啡」"
         placeholder-class="editor-placeholder"
         value="{{editor.name}}"
-        maxlength="8"
+        maxlength="6"
+        focus="{{editor.visible}}"
         bindinput="onNameInput"
       />
     </view>
 
-    <view class="editor-label">选个图标</view>
-    <scroll-view class="emoji-grid" scroll-y>
-      <view class="emoji-wrap">
-        <view
-          wx:for="{{emojis}}"
-          wx:key="*this"
-          class="emoji {{editor.icon === item ? 'active' : ''}}"
-          data-emoji="{{item}}"
-          bindtap="pickEmoji"
-        >{{item}}</view>
-      </view>
-    </scroll-view>
-
-    <view class="editor-label">选个颜色</view>
+    <view class="editor-label">印章颜色</view>
     <view class="color-grid">
       <view
         wx:for="{{colors}}"
@@ -71,5 +57,6 @@
         bindtap="pickColor"
       ></view>
     </view>
+    <view class="editor-hint">图章取分类名的第一个字，比如「餐饮」显示「餐」。</view>
   </view>
 </view>

@@ -5,7 +5,17 @@
 }
 
 .setup-emoji {
-  font-size: 80rpx;
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto;
+  border: 1rpx solid var(--line-strong);
+  border-radius: 10rpx;
+  background: var(--paper);
+  font-family: var(--font-song);
+  font-size: 44rpx;
+  color: var(--ink-3);
+  line-height: 96rpx;
+  text-align: center;
 }
 
 .setup-title {
@@ -308,7 +318,7 @@
   border-bottom: none;
 }
 
-/* 分类图标做成方章，不用圆形色块 */
+/* 分类用单字图章，不用 emoji */
 .entry-stamp {
   width: 62rpx;
   height: 62rpx;
@@ -317,7 +327,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-song);
   font-size: 30rpx;
+  color: var(--ink);
   margin-right: 20rpx;
   flex-shrink: 0;
   background: var(--paper);

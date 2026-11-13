@@ -522,14 +522,14 @@ async function testCategory() {
     await settle()
     page.openAdd()
     page.onNameInput(input('咖啡'))
-    page.pickEmoji(tap({ emoji: '☕' }))
-    page.pickColor(tap({ color: '#A1887F' }))
+    page.pickColor(tap({ color: '#8C5A3C' }))
     page.save()
     await settle(20)
 
     const coffee = page.data.list.filter((item) => item.name === '咖啡')[0]
     assert.ok(coffee, '新增的分类应出现在列表里')
-    assert.strictEqual(coffee.icon, '☕')
+    assert.strictEqual(coffee.seal, '咖', '图章应取分类名第一个字')
+    assert.strictEqual(coffee.color, '#8C5A3C')
   })
 
   await run('删除分类不影响已记的账', async () => {

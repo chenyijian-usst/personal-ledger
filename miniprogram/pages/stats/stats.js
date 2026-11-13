@@ -115,6 +115,7 @@ Page({
       .sort((a, b) => b.total - a.total)
       .map((item) => ({
         id: item.id,
+        seal: (item.name || '未').slice(0, 1),
         name: item.name,
         icon: item.icon,
         color: item.color,

@@ -1,6 +1,6 @@
 <view class="page-plain">
   <view wx:if="{{!ready}}" class="empty">
-    <text class="empty-emoji">🔧</text>
+    <text class="empty-emoji">未</text>
     <view>还没配置云开发环境</view>
     <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
   </view>

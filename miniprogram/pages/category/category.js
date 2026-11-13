@@ -1,17 +1,8 @@
 const api = require('../../utils/api')
 
-const EMOJIS = [
-  '🍜', '🍚', '☕', '🍎', '🍺', '🍰', '🛒', '👕', '👟', '💄',
-  '🏠', '💡', '📱', '🚌', '🚗', '✈️', '🏥', '💊', '📚', '🎓',
-  '🎮', '🎬', '🎵', '🏃', '🎁', '🧧', '🐱', '🐶', '💰', '🏆',
-  '💼', '📈', '🧾', '💵', '💳', '🏦', '📦', '🧸', '🔧', '🌷'
-]
-
 const COLORS = [
-  '#FF8A65', '#4FC3F7', '#F06292', '#BA68C8', '#7986CB', '#FFD54F',
-  '#4DB6AC', '#E57373', '#64B5F6', '#9575CD', '#81C784', '#FFB74D',
-  '#4DD0E1', '#A1887F', '#90A4AE', '#4CAF50', '#FFB300', '#5C6BC0',
-  '#26A69A', '#EF5350'
+  '#23201B', '#6E6455', '#B03A2E', '#A8761F', '#2F6B4E', '#2B3A44',
+  '#7A4E7E', '#1F6F78', '#8C5A3C', '#4A5568', '#9C3B5A', '#5B6C3F'
 ]
 
 Page({
@@ -20,14 +11,13 @@ Page({
     type: 'expense',
     list: [],
     total: 0,
-    emojis: EMOJIS,
     colors: COLORS,
     editor: {
       visible: false,
       id: '',
       name: '',
-      icon: '📦',
-      color: '#90A4AE'
+      color: '#23201B',
+      seal: '分'
     }
   },
 
@@ -51,7 +41,12 @@ Page({
     const type = this.data.type
     const list = (this.all || [])
       .filter((item) => item.type === type)
-      .map((item) => ({ id: item._id, name: item.name, icon: item.icon, color: item.color }))
+      .map((item) => ({
+        id: item._id,
+        name: item.name,
+        color: item.color || '#23201B',
+        seal: (item.name || '未').slice(0, 1)
+      }))
     this.setData({ list: list, total: (this.all || []).length })
   },
 
@@ -63,7 +58,7 @@ Page({
 
   openAdd() {
     this.setData({
-      editor: { visible: true, id: '', name: '', icon: '📦', color: '#90A4AE' }
+      editor: { visible: true, id: '', name: '', color: '#23201B', seal: '分' }
     })
   },
 
@@ -72,7 +67,13 @@ Page({
     const item = this.data.list.filter((row) => row.id === id)[0]
     if (!item) return
     this.setData({
-      editor: { visible: true, id: item.id, name: item.name, icon: item.icon, color: item.color }
+      editor: {
+        visible: true,
+        id: item.id,
+        name: item.name,
+        color: item.color,
+        seal: item.seal
+      }
     })
   },
 
@@ -81,11 +82,11 @@ Page({
   },
 
   onNameInput(e) {
-    this.setData({ 'editor.name': e.detail.value })
-  },
-
-  pickEmoji(e) {
-    this.setData({ 'editor.icon': e.currentTarget.dataset.emoji })
+    const name = e.detail.value
+    this.setData({
+      'editor.name': name,
+      'editor.seal': (name || '').trim().slice(0, 1) || '分'
+    })
   },
 
   pickColor(e) {
@@ -105,7 +106,8 @@ Page({
         {
           id: editor.id || undefined,
           name: name,
-          icon: editor.icon,
+          // 图标字段保留，但存的是单字，不再用 emoji
+          icon: (name || '分').slice(0, 1),
           color: editor.color,
           type: this.data.type,
           sort: editor.id ? undefined : 900
@@ -127,8 +129,8 @@ Page({
     if (!item) return
     wx.showModal({
       title: '删除分类',
-      content: '删除「' + item.name + '」？已经记过的账不受影响，仍会显示原来的名字和图标。',
-      confirmColor: '#f2544b',
+      content: '删除「' + item.name + '」？已经记过的账不受影响，仍会显示原来的名字和单字章。',
+      confirmColor: '#b03a2e',
       success: async (res) => {
         if (!res.confirm) return
         try {
@@ -140,7 +142,5 @@ Page({
         }
       }
     })
-  },
-
-  stopPropagation() {}
+  }
 })

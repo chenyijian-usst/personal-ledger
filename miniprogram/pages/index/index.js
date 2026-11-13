@@ -76,8 +76,7 @@ Page({
 
     const recent = records.map((item) => ({
       id: item._id,
-      icon: item.categoryIcon || '📦',
-      color: item.categoryColor || '#A2957F',
+      seal: (item.categoryName || '未').slice(0, 1),
       name: item.categoryName || '未分类',
       remark: item.remark || '',
       dateText: dateUtil.dayLabel(item.date),

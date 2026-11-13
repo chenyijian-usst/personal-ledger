@@ -1,7 +1,7 @@
 <view class="page">
   <!-- 没配置云开发时，先引导 -->
   <view wx:if="{{!ready}}" class="card setup-card">
-    <view class="setup-emoji">🔧</view>
+    <view class="setup-emoji">未</view>
     <view class="setup-title">还差一步就能用了</view>
     <view class="setup-desc">小程序还没连上云开发环境。点下面看 3 分钟的配置说明。</view>
     <button class="btn-primary setup-btn" bindtap="goSetup">查看配置说明</button>
@@ -84,7 +84,7 @@
         data-id="{{item.id}}"
         bindtap="onRecordTap"
       >
-        <view class="entry-stamp" style="color: {{item.color}}">{{item.icon}}</view>
+        <view class="entry-stamp">{{item.seal}}</view>
         <view class="entry-main">
           <view class="entry-name">{{item.name}}</view>
           <view wx:if="{{item.remark}}" class="entry-remark">{{item.remark}}</view>

@@ -17,10 +17,10 @@ Page({
     this.setData({
       monthText: dateUtil.monthLabel(dateUtil.currentMonth()),
       entries: [
-        { key: 'budget', icon: '🎯', label: '预算设置', desc: '每月额度与超支提醒' },
-        { key: 'category', icon: '🏷️', label: '分类管理', desc: '新增、改名、删除分类' },
-        { key: 'import', icon: '📥', label: '账单导入', desc: '微信 / 支付宝 CSV' },
-        { key: 'export', icon: '📤', label: '数据导出', desc: '导出 CSV 备份' }
+        { key: 'budget', icon: '预', label: '预算设置', desc: '每月额度与超支提醒' },
+        { key: 'category', icon: '类', label: '分类管理', desc: '新增、改名、删除分类' },
+        { key: 'import', icon: '入', label: '账单导入', desc: '微信 / 支付宝 CSV' },
+        { key: 'export', icon: '出', label: '数据导出', desc: '导出 CSV 备份' }
       ]
     })
   },

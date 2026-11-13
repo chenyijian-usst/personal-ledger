@@ -1,6 +1,6 @@
 <view class="page">
   <view wx:if="{{!ready}}" class="empty">
-    <text class="empty-emoji">🔧</text>
+    <text class="empty-emoji">未</text>
     <view>还没配置云开发环境</view>
     <button class="btn-ghost setup-btn" bindtap="goSetup">查看配置说明</button>
   </view>
@@ -51,7 +51,7 @@
           bindtap="onItemTap"
           bindlongpress="onItemLongPress"
         >
-          <view class="record-icon">{{item.icon}}</view>
+          <view class="record-icon">{{item.seal}}</view>
           <view class="record-main">
             <view class="record-name">{{item.name}}</view>
             <view wx:if="{{item.remark}}" class="record-remark">{{item.remark}}</view>
@@ -62,7 +62,7 @@
     </block>
 
     <view wx:if="{{!groups.length && !loading}}" class="empty">
-      <text class="empty-emoji">🗓</text>
+      <text class="empty-emoji">空</text>
       <view>这个月还没有记录</view>
       <view class="hint">点右下角「记一笔」开始</view>
     </view>

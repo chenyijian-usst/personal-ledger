@@ -1,6 +1,6 @@
 <view class="page-plain">
   <view class="profile">
-    <view class="avatar">🧾</view>
+    <view class="avatar">账</view>
     <view class="col">
       <text class="profile-title">我的账本</text>
       <text class="hint">只给自己看的收支记录</text>
@@ -44,7 +44,7 @@
 
   <view class="card menu">
     <view class="menu-item" bindtap="goSetup">
-      <text class="menu-icon">⚙️</text>
+      <text class="menu-icon">设</text>
       <view class="menu-main">
         <text class="menu-label">环境与部署</text>
         <text class="menu-desc">{{localMode ? '演示模式：数据存在本机' : (ready ? '云开发已连接' : '还没配置云开发')}}</text>

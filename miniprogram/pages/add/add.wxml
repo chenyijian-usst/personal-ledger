@@ -23,8 +23,8 @@
         data-id="{{item._id}}"
         bindtap="pickCategory"
       >
-        <view class="cat-icon" style="background: {{item.color}}22">
-          <text>{{item.icon}}</text>
+        <view class="cat-icon">
+          <text>{{item.seal}}</text>
         </view>
         <text class="cat-name">{{item.name}}</text>
       </view>

@@ -188,10 +188,18 @@ button::after {
 }
 
 .empty-emoji {
-  font-size: 64rpx;
   display: block;
-  margin-bottom: 20rpx;
-  opacity: 0.85;
+  width: 88rpx;
+  height: 88rpx;
+  margin: 0 auto 22rpx;
+  border: 1rpx solid var(--line-strong);
+  border-radius: 8rpx;
+  background: var(--paper);
+  font-family: var(--font-song);
+  font-size: 40rpx;
+  color: var(--ink-3);
+  line-height: 88rpx;
+  text-align: center;
 }
 
 .safe-bottom {
