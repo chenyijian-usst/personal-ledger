@@ -14,8 +14,9 @@
   text-align: center;
   height: 70rpx;
   line-height: 70rpx;
-  font-size: 27rpx;
-  letter-spacing: 3rpx;
+  font-family: var(--font-song);
+  font-size: 28rpx;
+  letter-spacing: 4rpx;
   color: var(--ink-3);
   position: relative;
 }
@@ -252,6 +253,7 @@
   font-variant-numeric: tabular-nums;
   font-size: 42rpx;
   font-weight: 600;
+  letter-spacing: 0;
 }
 
 .keypad-done {

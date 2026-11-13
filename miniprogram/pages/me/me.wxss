@@ -78,8 +78,10 @@
 }
 
 .profile-title {
-  font-size: 36rpx;
-  font-weight: 600;
+  font-family: var(--font-song);
+  font-size: 38rpx;
+  font-weight: 400;
+  letter-spacing: 3rpx;
   margin-bottom: 6rpx;
 }
 

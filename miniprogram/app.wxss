@@ -29,7 +29,10 @@ page {
   --text-2: var(--ink-2);
   --text-3: var(--ink-3);
 
-  --serif: Georgia, 'Times New Roman', 'Songti SC', 'STSong', serif;
+  --serif: 'DIN Alternate', 'DIN Condensed', 'Roboto Condensed', 'Avenir Next Condensed',
+    'Helvetica Neue', Arial, sans-serif;
+  --font-song: 'Songti SC', 'STSong', 'Source Han Serif SC', 'Noto Serif CJK SC', 'SimSun',
+    'STSongti-SC-Regular', serif;
   --radius: 16rpx;
 
   background-color: var(--paper);
@@ -106,13 +109,14 @@ scroll-view {
   font-size: 24rpx;
 }
 
-/* 章节标题：小字 + 字距，像账簿的分栏名 */
+/* 章节标题：宋体 + 字距，像账簿的分栏名 */
 .section-title {
-  font-size: 22rpx;
+  font-family: var(--font-song);
+  font-size: 24rpx;
   color: var(--ink-3);
-  letter-spacing: 3rpx;
+  letter-spacing: 5rpx;
   margin: 36rpx 4rpx 14rpx;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .money-expense {
@@ -123,12 +127,12 @@ scroll-view {
   color: var(--income);
 }
 
-/* 金额一律等宽衬线数字 */
+/* 金额一律等宽数字（DIN 系字体会自动选中替代字形） */
 .num {
   font-family: var(--serif);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
-  letter-spacing: 0.3rpx;
+  letter-spacing: 0;
 }
 
 /* 按钮：墨色实心，圆角收小，像盖章 */

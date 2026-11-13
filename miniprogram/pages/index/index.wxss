@@ -109,8 +109,9 @@
 }
 
 .ledger-month {
-  font-size: 23rpx;
-  letter-spacing: 2rpx;
+  font-family: var(--font-song);
+  font-size: 24rpx;
+  letter-spacing: 3rpx;
   color: var(--ink-3);
 }
 
@@ -121,8 +122,9 @@
 
 .ledger-label {
   display: block;
-  font-size: 22rpx;
-  letter-spacing: 3rpx;
+  font-family: var(--font-song);
+  font-size: 23rpx;
+  letter-spacing: 5rpx;
   color: var(--ink-3);
   margin-top: 22rpx;
 }
@@ -161,8 +163,9 @@
 }
 
 .cell-k {
-  font-size: 21rpx;
-  letter-spacing: 2rpx;
+  font-family: var(--font-song);
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
   color: var(--ink-3);
 }
 
@@ -186,9 +189,10 @@
 }
 
 .budget-k {
-  font-size: 24rpx;
+  font-family: var(--font-song);
+  font-size: 25rpx;
   color: var(--ink-2);
-  letter-spacing: 1rpx;
+  letter-spacing: 3rpx;
 }
 
 .budget-v {
