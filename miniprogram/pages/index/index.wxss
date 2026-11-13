@@ -318,21 +318,21 @@
   border-bottom: none;
 }
 
-/* 分类用单字图章，不用 emoji */
-.entry-stamp {
-  width: 62rpx;
-  height: 62rpx;
-  border: 1rpx solid var(--line-strong);
-  border-radius: 8rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-song);
-  font-size: 30rpx;
-  color: var(--ink);
-  margin-right: 20rpx;
+/* 收支方向用一个小点表示，避免和分类名重复 */
+.entry-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  margin-right: 18rpx;
   flex-shrink: 0;
-  background: var(--paper);
+}
+
+.entry-dot.exp {
+  background: var(--expense);
+}
+
+.entry-dot.inc {
+  background: var(--income);
 }
 
 .entry-main {

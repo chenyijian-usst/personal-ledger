@@ -84,7 +84,7 @@
         data-id="{{item.id}}"
         bindtap="onRecordTap"
       >
-        <view class="entry-stamp">{{item.seal}}</view>
+        <view class="entry-dot {{item.isIncome ? 'inc' : 'exp'}}"></view>
         <view class="entry-main">
           <view class="entry-name">{{item.name}}</view>
           <view wx:if="{{item.remark}}" class="entry-remark">{{item.remark}}</view>

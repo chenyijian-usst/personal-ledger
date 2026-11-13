@@ -51,7 +51,7 @@
           bindtap="onItemTap"
           bindlongpress="onItemLongPress"
         >
-          <view class="record-icon">{{item.seal}}</view>
+          <view class="record-dot {{item.isIncome ? 'inc' : 'exp'}}"></view>
           <view class="record-main">
             <view class="record-name">{{item.name}}</view>
             <view wx:if="{{item.remark}}" class="record-remark">{{item.remark}}</view>
