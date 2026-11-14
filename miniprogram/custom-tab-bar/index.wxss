@@ -1,0 +1,49 @@
+/* 自定义 tabBar：原生 tabBar 的字号写死改不了，只能自己画。
+   风格跟正文一致——纸色底、一条细边线、宋体栏名，选中只加粗 + 一道墨青短横。 */
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  height: calc(104rpx + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--card, #fffdf8);
+  border-top: 1rpx solid var(--line-strong, #d8cdb8);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 104rpx;
+}
+
+.tab-label {
+  font-family: var(--font-song, 'Songti SC', 'SimSun', serif);
+  font-size: 30rpx;
+  line-height: 1.2;
+  letter-spacing: 3rpx;
+  color: var(--ink-3, #a2957f);
+}
+
+.tab.on .tab-label {
+  color: var(--ink, #23201b);
+  font-weight: 600;
+}
+
+/* 选中标记：一小道墨青短横，像账簿上划的重点 */
+.tab-mark {
+  width: 26rpx;
+  height: 4rpx;
+  margin-top: 10rpx;
+  border-radius: 2rpx;
+  background: transparent;
+}
+
+.tab.on .tab-mark {
+  background: var(--primary, #2b3a44);
+}

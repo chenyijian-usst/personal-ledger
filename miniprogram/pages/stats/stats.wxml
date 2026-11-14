@@ -34,7 +34,6 @@
       <view wx:for="{{rows}}" wx:key="id" class="ratio">
         <view class="ratio-head">
           <view class="ratio-name">
-            <text class="ratio-icon">{{item.seal}}</text>
             <text>{{item.name}}</text>
             <text class="ratio-count">{{item.count}}笔</text>
           </view>

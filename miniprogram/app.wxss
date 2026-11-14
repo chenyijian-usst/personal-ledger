@@ -71,6 +71,11 @@ scroll-view {
   padding: 24rpx 24rpx calc(40rpx + env(safe-area-inset-bottom));
 }
 
+/* 自定义 tabBar 是浮层，占不到文档流的高度，带 tabBar 的页面要自己留白 */
+.page-tab {
+  padding-bottom: calc(150rpx + env(safe-area-inset-bottom));
+}
+
 /* 卡片：纸片感，细边线 + 极浅投影 */
 .card {
   background: var(--card);

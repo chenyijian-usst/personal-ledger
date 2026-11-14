@@ -1,4 +1,4 @@
-<view class="page-plain">
+<view class="page-plain page-tab">
   <view class="profile">
     <view class="avatar">账</view>
     <view class="col">

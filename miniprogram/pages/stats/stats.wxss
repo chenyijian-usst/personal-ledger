@@ -122,19 +122,11 @@
   margin-bottom: 10rpx;
 }
 
+/* 分类名只出现一次：不再在名字前重复放单字图章 */
 .ratio-name {
   display: flex;
   align-items: center;
   font-size: 27rpx;
-}
-
-.ratio-icon {
-  width: 34rpx;
-  text-align: center;
-  font-family: var(--font-song);
-  font-size: 26rpx;
-  color: var(--ink-2);
-  margin-right: 10rpx;
 }
 
 .ratio-count {

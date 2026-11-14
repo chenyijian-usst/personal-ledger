@@ -1,6 +1,7 @@
 const api = require('../../utils/api')
 const dateUtil = require('../../utils/date')
 const money = require('../../utils/money')
+const syncTabBar = require('../../utils/tabbar')
 
 Page({
   data: {
@@ -37,6 +38,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 0)
     const app = getApp()
     this.setData({ ready: !!app.globalData.ready, localMode: !!app.globalData.localMode })
     // 在别的页面切过月份时，首页跟着切到同一个月

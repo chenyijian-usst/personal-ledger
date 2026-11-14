@@ -1,6 +1,7 @@
 const api = require('../../utils/api')
 const dateUtil = require('../../utils/date')
 const money = require('../../utils/money')
+const syncTabBar = require('../../utils/tabbar')
 
 Page({
   data: {
@@ -23,6 +24,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 2)
     const app = getApp()
     this.setData({ ready: !!app.globalData.ready })
     if (!app.globalData.ready) return
@@ -115,7 +117,6 @@ Page({
       .sort((a, b) => b.total - a.total)
       .map((item) => ({
         id: item.id,
-        seal: (item.name || '未').slice(0, 1),
         name: item.name,
         icon: item.icon,
         color: item.color,

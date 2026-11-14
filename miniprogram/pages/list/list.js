@@ -1,6 +1,7 @@
 const api = require('../../utils/api')
 const dateUtil = require('../../utils/date')
 const money = require('../../utils/money')
+const syncTabBar = require('../../utils/tabbar')
 
 Page({
   data: {
@@ -21,6 +22,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 1)
     const app = getApp()
     this.setData({ ready: !!app.globalData.ready })
     if (!app.globalData.ready) return

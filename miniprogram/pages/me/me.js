@@ -1,5 +1,6 @@
 const dateUtil = require('../../utils/date')
 const api = require('../../utils/api')
+const syncTabBar = require('../../utils/tabbar')
 
 Page({
   data: {
@@ -26,6 +27,7 @@ Page({
   },
 
   onShow() {
+    syncTabBar(this, 3)
     const app = getApp()
     this.setData({ ready: !!app.globalData.ready, localMode: !!app.globalData.localMode })
     if (app.globalData.ready) this.loadStats()
