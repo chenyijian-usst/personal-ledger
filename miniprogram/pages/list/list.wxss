@@ -115,23 +115,7 @@
   border-bottom: none;
 }
 
-/* 收支方向小圆点 */
-.record-dot {
-  width: 12rpx;
-  height: 12rpx;
-  border-radius: 50%;
-  margin-right: 18rpx;
-  flex-shrink: 0;
-}
-
-.record-dot.exp {
-  background: var(--expense);
-}
-
-.record-dot.inc {
-  background: var(--income);
-}
-
+/* 行内不放图标：收支靠金额前的 -/+ 与朱红/墨绿，多余的符号反而干扰 */
 .record-main {
   flex: 1;
   min-width: 0;

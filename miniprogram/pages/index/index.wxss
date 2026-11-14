@@ -318,23 +318,7 @@
   border-bottom: none;
 }
 
-/* 收支方向用一个小点表示，避免和分类名重复 */
-.entry-dot {
-  width: 12rpx;
-  height: 12rpx;
-  border-radius: 50%;
-  margin-right: 18rpx;
-  flex-shrink: 0;
-}
-
-.entry-dot.exp {
-  background: var(--expense);
-}
-
-.entry-dot.inc {
-  background: var(--income);
-}
-
+/* 行内不放图标：收支靠金额前的 -/+ 与朱红/墨绿 */
 .entry-main {
   flex: 1;
   min-width: 0;

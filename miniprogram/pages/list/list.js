@@ -68,7 +68,6 @@ Page({
       group[isIncome ? 'income' : 'expense'] += item.amountFen
       group.items.push({
         id: item._id,
-        seal: (item.categoryName || '未').slice(0, 1),
         name: item.categoryName || '未分类',
         remark: item.remark || '',
         isIncome: isIncome,
